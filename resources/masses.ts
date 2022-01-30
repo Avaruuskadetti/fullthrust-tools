@@ -11,5 +11,8 @@ const masses = {
   launchTube: 3,
   fighterRack: 6,
   gunboatRack: 18,
+  cargoSpace: 1,
+  passengerSpace: 1,
+  marineSpace: 1,
 }
 export default masses

@@ -1,7 +1,9 @@
 import { stringify } from "querystring"
 import points from "../resources/points"
 import shipComponents from "../resources/shipComponents"
+import mass from "../resources/masses"
 import { fighters } from "../resources/fighters"
+import { getWeaponBlueprint, weapon } from "../resources/weapons"
 
 /* Divides hull boxes to rows, returns an array with number of boxes/row */
 export const calculateHullArray = (hull: number, rows: number) => {
@@ -78,6 +80,17 @@ export const getFighterTypeData = (value: string) =>
 /* SHIP POINT CALCULATION RELATED FUNCTIONS */
 /* Helper functions */
 export const asPoints = (value: number) => (value > 1 ? Math.round(value) : 1)
+
+const calculateHullCPV = (ship: any) => {
+  const nonCombatMass =
+    ship.cargoSpaces * mass.cargoSpace +
+    ship.passengerSpaces * mass.passengerSpace +
+    ship.marineSpaces * mass.marineSpace +
+    ship.hangars * mass.hangar
+  const cpvMass = Math.round(Math.pow(ship.mass - nonCombatMass, 2) / 100)
+  return cpvMass && cpvMass > 0 ? cpvMass : 1
+}
+
 const getHullFactor = (rows = 4) => {
   switch (rows) {
     case 3:
@@ -115,8 +128,18 @@ const calculateFightersValue = (ship: any) => {
   return ship.fighters.reduce(reducer, 0)
 }
 
+const calculateWeaponsValue = (ship: any) => {
+  const reducer = (acc: number, curr: weapon) => {
+    const bp = getWeaponBlueprint(curr.value)
+    const points = bp.points(curr, ship)
+    return acc + points
+  }
+  return ship.weapons.reduce(reducer, 0)
+}
+
 /* Main scoring function */
-export const calculateShipValue = (ship: any) => {
+export const calculateShipValue = (ship: any, cpv: boolean = false) => {
+  const tmf = cpv ? calculateHullCPV(ship) : ship.mass
   /* Hull boxes times hull row factor from helper function */
   const hull = asPoints(ship.hull * getHullFactor(ship.hullRows))
   /* OBS! NOTE! HUOM! */
@@ -162,10 +185,11 @@ export const calculateShipValue = (ship: any) => {
   const crew = points.marines * ship.marines + points.dcp * ship.extraDCP
 
   const systems = calculateSystemsValue(ship)
+  const weapons = calculateWeaponsValue(ship)
   const flawed = ship.flawed ? 0.8 : 1
   /* FINAL CALCULATION */
   return asPoints(
-    (ship.mass +
+    (tmf +
       hull +
       stealthHull +
       ftl +
@@ -175,7 +199,8 @@ export const calculateShipValue = (ship: any) => {
       racks +
       fighters +
       crew +
-      systems) *
+      systems +
+      weapons) *
       flawed
   )
 }

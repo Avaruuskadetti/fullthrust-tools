@@ -2,10 +2,12 @@ import { FC } from "react"
 
 interface RocketIconInterface {
   m?: string
+  cssModule?: any
 }
 
-const RocketIcon: FC<RocketIconInterface> = ({ m }) => (
+const RocketIcon: FC<RocketIconInterface> = ({ m, cssModule }) => (
   <div
+    className={cssModule}
     style={{
       margin: m + "px",
       display: "flex",

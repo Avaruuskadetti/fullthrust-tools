@@ -103,6 +103,36 @@ const shipComponents = [
     },
   },
   {
+    value: "areaScreen",
+    label: "Area Screen Generator",
+    type: "options",
+    options: ["standard 1", "standard 2", "advanced 1", "advanced 2"],
+    mass: (ship: any) => {
+      switch (getSystemFromShip(ship, "areaScreen").version) {
+        case "standard 1":
+          return asPoints(0.2 * ship.mass)
+        case "standard 2":
+          return asPoints(0.4 * ship.mass)
+        case "advanced 1":
+          return asPoints(0.3 * ship.mass)
+        case "advanced 2":
+          return asPoints(0.6 * ship.mass)
+      }
+    },
+    points: (ship: any) => {
+      switch (getSystemFromShip(ship, "areaScreen").version) {
+        case "standard 1":
+          return asPoints(0.7 * ship.mass)
+        case "standard 2":
+          return asPoints(1.4 * ship.mass)
+        case "advanced 1":
+          return asPoints(1.05 * ship.mass)
+        case "advanced 2":
+          return asPoints(2.1 * ship.mass)
+      }
+    },
+  },
+  {
     value: "cloaking",
     label: "Cloaking device/field",
     type: "options",

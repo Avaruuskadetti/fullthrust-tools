@@ -12,6 +12,7 @@ import {
   Burger,
   SimpleGrid,
   Container,
+  Grid,
 } from "@mantine/core"
 import BuilderForm from "../components/BuilderForm"
 import ShipData from "../components/ShipData"
@@ -45,6 +46,7 @@ const HomePage: NextPage = () => {
     marines: 0,
     flawed: false,
     systems: [],
+    weapons: [],
   })
 
   return (
@@ -83,12 +85,13 @@ const HomePage: NextPage = () => {
         </Header>
       }
     >
-      <SimpleGrid cols={2}>
-        <Container>
+      <Grid style={{ width: "100%" }}>
+        <Grid.Col span={12} md={6}>
           <BuilderForm ship={ship} setShip={setShip} />
-        </Container>
+        </Grid.Col>
+
         <ShipData ship={ship} />
-      </SimpleGrid>
+      </Grid>
     </AppShell>
   )
 }

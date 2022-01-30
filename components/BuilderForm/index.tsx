@@ -21,6 +21,7 @@ import shipComponents from "../../resources/shipComponents"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import Hangars from "./Hangars"
+import Weapons from "./Weapons"
 
 interface BuilderFormProps {
   ship: any
@@ -90,7 +91,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
   }
 
   return (
-    <div>
+    <>
       {/* Structure */}
       <Paper my={16} padding='md' withBorder shadow='sm'>
         <Title order={3}>Structure</Title>
@@ -202,6 +203,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         </InputWrapper>
         <Divider mt={16} mb={8} />
         <Switch
+          disabled={ship.hullRows === 3 || ship.mass < 60}
           label={`Flawed design ${
             ship.hullRows === 3 ? "(incompatible with advanced hull)" : ""
           } ${ship.mass < 60 ? "(mass 60+ required)" : ""}`}
@@ -296,7 +298,8 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         </Group>
       </Paper>
       <Systems ship={ship} setShip={setShip} />
-    </div>
+      <Weapons ship={ship} setShip={setShip} />
+    </>
   )
 }
 export default BuilderForm

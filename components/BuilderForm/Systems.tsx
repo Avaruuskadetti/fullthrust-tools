@@ -65,30 +65,31 @@ const Systems: FC<SystemsProps> = ({ ship, setShip }) => {
   return (
     <Paper my={16} padding='md' withBorder shadow='sm'>
       <Title order={3}>Ship systems</Title>
-      <MultiSelect
-        searchable
-        label='Add systems'
-        placeholder='Pick one or more'
-        data={shipComponents
-          .filter(
-            (sc) =>
-              ship.systems.filter((s: any) => s.value === sc.value).length === 0
-          )
-          .sort((a, b) => (a.label < b.label ? -1 : 1))}
-        value={selectedSystems}
-        onChange={setSelectedSystems}
-      />
-      <Button
-        mt={8}
-        variant='default'
-        fullWidth
-        onClick={() => {
-          addSystems()
-          setSelectedSystems([])
-        }}
-      >
-        Add
-      </Button>
+      <Group noWrap align='flex-end'>
+        <MultiSelect
+          searchable
+          style={{ width: "100%" }}
+          label='Add systems'
+          placeholder='Pick one or more'
+          data={shipComponents
+            .filter(
+              (sc) =>
+                ship.systems.filter((s: any) => s.value === sc.value).length ===
+                0
+            )
+            .sort((a, b) => (a.label < b.label ? -1 : 1))}
+          value={selectedSystems}
+          onChange={setSelectedSystems}
+        />
+        <Button
+          onClick={() => {
+            addSystems()
+            setSelectedSystems([])
+          }}
+        >
+          Add
+        </Button>
+      </Group>
       <Divider mt={16} mb={16} />
       <div>
         {ship.systems.length > 0 &&
