@@ -1,10 +1,10 @@
 import type { NextPage } from "next"
+import Link from "next/link"
 import { useState } from "react"
 import {
   Title,
   Text,
   Paper,
-  TextInput,
   Textarea,
   Group,
   Slider,
@@ -17,6 +17,7 @@ import {
 } from "@mantine/core"
 import SendIcon from "../assets/SendIcon"
 import DiscordIcon from "../assets/DiscordIcon"
+import GithubIcon from "../assets/GithubIcon"
 
 const Page: NextPage = () => {
   const [input, setInput] = useState<{ [key: string]: number | string }>({
@@ -67,7 +68,7 @@ const Page: NextPage = () => {
             <form>
               <InputWrapper
                 style={{ padding: "1rem 0" }}
-                label='From 1 to 10, how likely it is you will use this tool?'
+                label='From 1 to 10, how useful is this site for you?'
               >
                 <Slider
                   showLabelOnHover={true}
@@ -105,7 +106,7 @@ const Page: NextPage = () => {
               <Textarea
                 mt='md'
                 label='Tell me whatever you want'
-                placeholder='Did you find a bug? Is a great feature missing?'
+                placeholder='Did you find a bug? Is a feature missing? What did you like?'
                 value={input.openFeedback}
                 onChange={(event) =>
                   setInput({ ...input, openFeedback: event.target.value })
@@ -182,6 +183,39 @@ const Page: NextPage = () => {
               </div>
               Avariisladjkeoto#4133
             </Text>
+            <Link href='https://github.com/Avaruuskadetti' passHref>
+              <Text
+                component='a'
+                sx={(theme) => ({
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor:
+                    theme.colorScheme === "light"
+                      ? theme.colors.gray[1]
+                      : theme.colors.gray[9],
+                  borderRadius: "100px",
+                  padding: "4px",
+                  paddingRight: "12px",
+                })}
+              >
+                <div
+                  style={{
+                    color: "black",
+                    borderRadius: "100%",
+                    backgroundColor: "white",
+                    height: "calc(18px + 0.7rem)",
+                    marginRight: "0.5rem",
+                    aspectRatio: "1",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <GithubIcon size='18' />
+                </div>
+                Avaruuskadetti
+              </Text>
+            </Link>
           </Group>
         </Paper>
       </Grid.Col>

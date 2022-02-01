@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AppProps } from "next/app"
-import Link from "next/link"
+import { useRouter } from "next/router"
 import Head from "next/head"
 import {
   MantineProvider,
@@ -16,15 +16,23 @@ import {
   ColorSchemeProvider,
   ColorScheme,
   Navbar,
+  Switch,
+  Group,
+  Divider,
 } from "@mantine/core"
 import RocketIcon from "../assets/RocketIcon"
 import StarIcon from "../assets/StarIcon"
 import NavItem from "../components/NavItem"
 import SendIcon from "../assets/SendIcon"
+import SunIcon from "../assets/SunIcon"
+import MoonIcon from "../assets/MoonIcon"
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
   const [open, setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light")
   const toggleColorScheme = (value?: ColorScheme) => {
@@ -52,7 +60,7 @@ export default function App(props: AppProps) {
         <title>Full Thrust Fleet Tool</title>
         <meta
           name='viewport'
-          content='minimum-scale=1, initial-scale=1, width=device-width'
+          content='minimum-scale=1, initial-scale=1, maximum-scale=1, width=device-width'
         />
       </Head>
       <ColorSchemeProvider
@@ -82,13 +90,19 @@ export default function App(props: AppProps) {
                 padding='md'
               >
                 <Navbar.Section grow>
-                  <NavItem href='/' icon={<RocketIcon m='3' />} color='blue'>
+                  <NavItem
+                    close={handleClose}
+                    href='/'
+                    icon={<RocketIcon m='3' />}
+                    color='blue'
+                  >
                     Ship builder
                   </NavItem>
                   <NavItem
                     href='/feedback'
                     icon={<SendIcon size='14' />}
                     color='green'
+                    close={handleClose}
                   >
                     Feedback
                   </NavItem>
@@ -96,14 +110,52 @@ export default function App(props: AppProps) {
                     href='/about'
                     icon={<StarIcon p={3} />}
                     color='yellow'
+                    close={handleClose}
                   >
                     About
                   </NavItem>
                 </Navbar.Section>
-                <Navbar.Section>
-                  <Button onClick={() => toggleColorScheme()}>
-                    {colorScheme === "dark" ? "Light mode" : "Dark mode"}
-                  </Button>
+                <Navbar.Section
+                  sx={(theme) => ({ paddingTop: theme.spacing.md })}
+                >
+                  <Divider
+                    sx={(theme) => ({
+                      width: "100%",
+                      marginBottom: theme.spacing.lg,
+                    })}
+                  />
+                  <Group ml={16} mb={6} spacing='xs'>
+                    <Box
+                      sx={(theme) => ({
+                        color:
+                          theme.colorScheme === "light"
+                            ? theme.colors.yellow[8]
+                            : theme.colors.yellow[8],
+                      })}
+                    >
+                      <SunIcon size='24' />
+                    </Box>
+                    <Switch
+                      size='md'
+                      color='dark'
+                      checked={colorScheme === "dark"}
+                      onChange={(event) =>
+                        toggleColorScheme(
+                          event.currentTarget.checked ? "dark" : "light"
+                        )
+                      }
+                    />
+                    <Box
+                      sx={(theme) => ({
+                        color:
+                          theme.colorScheme === "light"
+                            ? theme.colors.gray[8]
+                            : theme.colors.gray[6],
+                      })}
+                    >
+                      <MoonIcon size='22' />
+                    </Box>
+                  </Group>
                 </Navbar.Section>
               </Navbar>
             }

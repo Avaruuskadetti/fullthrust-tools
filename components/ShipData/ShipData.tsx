@@ -56,7 +56,10 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
           {ship.mass - calculateMass(ship)} mass left
         </Badge>
         <Badge variant='filled' color='green'>
-          No errors
+          NPV {calculateShipValue(ship)}
+        </Badge>
+        <Badge variant='filled' color='orange'>
+          CPV {calculateShipValue(ship, true)}
         </Badge>
       </Group>
       <Divider my='sm' />
