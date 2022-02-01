@@ -1,4 +1,6 @@
 import { FC, useState, useEffect, Key } from "react"
+import A from "../base/A"
+import Link from "next/link"
 import {
   Button,
   Title,
@@ -16,12 +18,12 @@ import {
   MultiSelect,
 } from "@mantine/core"
 import RocketIcon from "../../assets/RocketIcon"
-import { printNumberArray, countDCP } from "../../logic/helpers"
-import shipComponents from "../../resources/shipComponents"
+import { countDCP } from "../../logic/helpers"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import Hangars from "./Hangars"
 import Weapons from "./Weapons"
+import Ordnances from "./Ordnances"
 
 interface BuilderFormProps {
   ship: any
@@ -46,6 +48,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
 
   /* System related functions */
   const [selectedSystems, setSelectedSystems] = useState<string[]>([])
+  const [instructionsOpen, setInstructionsOpen] = useState(true)
 
   const addSystemArray = (systemArray: any) => {
     const mappingFunction = (system: any) => {
@@ -79,21 +82,51 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
     const combinedSystems = prevSystems.concat(newSystems)
     setShip({ ...ship, systems: combinedSystems })
   }
-  const addSystems = () => {
-    const systems = selectedSystems
-      .map(
-        (value: string) => shipComponents.filter((c) => c.value === value)[0]
-      )
-      .filter(
-        (s) => ship.systems.filter((t: any) => t.value === s.value).length === 0
-      )
-    addSystemArray(systems)
-  }
 
   return (
     <>
+      <Paper
+        padding='md'
+        mb={16}
+        withBorder
+        shadow='sm'
+        style={{ display: instructionsOpen ? "block" : "none" }}
+      >
+        <Title order={3}>Instructions</Title>
+        <Text my='sm'>
+          This ship builder is designed for{" "}
+          <A href='https://emeraldcoastskunkworks.wordpress.com/'>
+            Full Thrust Continuum
+          </A>
+          . It follows ship building rules from the rulebook combined with CPV
+          calculation as released on{" "}
+          <A href='https://fullthrust.star-ranger.com/CPV.htm'>
+            Star Combat News
+          </A>
+          . Some rule interpretation was required and some ship features are
+          still unimplemented,{" "}
+          <A href='/ship-builder-rules-interpretations'>read more here</A>.
+        </Text>
+        <Text my='sm'>
+          Build your ship by filling in the forms below. On desktop, you will
+          see the resulting ship on the right column. On mobile, preview the
+          ship by clicking the rocket icon in the top right corner. Once
+          you&apos;re finished, just copy the resulting ship to clipboard.
+        </Text>
+        <Text my='sm'>Happy building!</Text>
+        <Group mt='lg' mb='sm'>
+          <Button variant='outline' onClick={() => setInstructionsOpen(false)}>
+            Close instructions
+          </Button>
+          <Link href='/feedback' passHref>
+            <Button variant='subtle' component='a'>
+              Leave feedback
+            </Button>
+          </Link>
+        </Group>
+      </Paper>
       {/* Structure */}
-      <Paper my={16} padding='md' withBorder shadow='sm'>
+      <Paper mb={16} padding='md' withBorder shadow='sm'>
         <Title order={3}>Structure</Title>
         <TextInput
           icon={<RocketIcon m='8' />}
@@ -135,22 +168,21 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         <InputWrapper label='Armor rows'>
           <Group noWrap>
             <Button
-              variant='default'
+              variant='filled'
               fullWidth
-              compact
               disabled={ship.armor.length > 3}
               onClick={addArmorRow}
             >
-              Add
+              Add row
             </Button>
             <Button
-              variant='default'
+              variant='filled'
+              color='red'
               fullWidth
-              compact
               disabled={ship.armor.length === 0}
               onClick={removeArmorRow}
             >
-              Remove
+              Remove row
             </Button>
           </Group>
         </InputWrapper>
@@ -260,19 +292,22 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         <Title order={3}>Hangars & Cargo</Title>
         <Hangars ship={ship} setShip={setShip} />
         <Fighters ship={ship} setShip={setShip} />
-        <Text weight={600}>Cargo and passenger space</Text>
+        <Text weight={600}>Cargo and passenger space (mass used)</Text>
         <Group noWrap>
           <NumberInput
+            min={0}
             value={ship.cargoSpaces}
             onChange={(value) => setShip({ ...ship, cargoSpaces: value })}
             label='Cargo'
           />
           <NumberInput
+            min={0}
             value={ship.passengerSpaces}
             onChange={(value) => setShip({ ...ship, passengerSpaces: value })}
             label='Passenger'
           />
           <NumberInput
+            min={0}
             value={ship.marineSpaces}
             onChange={(value) => setShip({ ...ship, marineSpaces: value })}
             label='Marine'
@@ -299,6 +334,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
       </Paper>
       <Systems ship={ship} setShip={setShip} />
       <Weapons ship={ship} setShip={setShip} />
+      <Ordnances ship={ship} setShip={setShip} />
     </>
   )
 }

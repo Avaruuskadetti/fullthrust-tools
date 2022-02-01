@@ -14,7 +14,7 @@ const WeaponsData: FC<WeaponsDataProps> = ({ ship }) => {
             bp.classes && bp.classes?.length > 1 ? `Class ${w.class} ` : ""
           }${w.label}${
             w.arcs ? ` (${w.arcs} arc${parseInt(w.arcs) > 1 ? "s" : ""})` : ""
-          }`}
+          }${w.variant ? " [variant: " + w.variant + "]" : ""}`}
         </Text>
       )
     } else {

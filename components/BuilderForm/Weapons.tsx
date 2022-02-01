@@ -7,6 +7,7 @@ import {
   Button,
   Select,
   Group,
+  Divider,
 } from "@mantine/core"
 
 import Weapon from "./Weapon"
@@ -23,14 +24,12 @@ interface WeaponsProps {
 }
 const Weapons: FC<WeaponsProps> = ({ ship, setShip }) => {
   const [currentWeapon, setCurrentWeapon] = useState("")
-  const logger = (value: any) => {
-    console.log(value)
-    return value
-  }
+
   const getID = () =>
     ship.weapons.length > 0
       ? Math.max(...ship.weapons.map((w: weapon) => w.id)) + 1
       : 1
+
   const addWeapon = () => {
     if (currentWeapon) {
       const bp = getWeaponBlueprint(currentWeapon)
@@ -60,9 +59,11 @@ const Weapons: FC<WeaponsProps> = ({ ship, setShip }) => {
     setShip({ ...ship, weapons: newWeapons })
   }
 
-  const weaponTypeData = weaponBlueprints.map((bp: weaponBlueprint) => {
-    return { value: bp.value, label: bp.label }
-  })
+  const weaponTypeData = weaponBlueprints
+    .map((bp: weaponBlueprint) => {
+      return { value: bp.value, label: bp.label }
+    })
+    .sort((a, b) => (a.label < b.label ? -1 : 1))
   return (
     <Paper my={16} padding='md' withBorder shadow='sm'>
       <Title order={3}>Weapons</Title>
@@ -79,6 +80,7 @@ const Weapons: FC<WeaponsProps> = ({ ship, setShip }) => {
         />
         <Button onClick={addWeapon}>Add</Button>
       </Group>
+      <Divider mt={16} mb={16} />
       {ship.weapons.map((weapon: weapon) => (
         <Weapon
           key={`${weapon.value}-${weapon.id}`}

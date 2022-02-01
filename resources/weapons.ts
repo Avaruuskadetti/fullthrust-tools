@@ -981,7 +981,5 @@ export const weaponBlueprints: weaponBlueprint[] = [
   },
 ]
 /*
-WEAPONS THAT NEED SPECIAL SOLUTIONS
-- Boarding Torpedo Launcher
-
+Boarding torpedo launcher is in ordnance instead
 */

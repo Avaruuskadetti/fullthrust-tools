@@ -110,9 +110,9 @@ const shipComponents = [
     mass: (ship: any) => {
       switch (getSystemFromShip(ship, "areaScreen").version) {
         case "standard 1":
-          return asPoints(0.2 * ship.mass)
+          return asPoints(Math.max(0.2 * ship.mass, 15))
         case "standard 2":
-          return asPoints(0.4 * ship.mass)
+          return asPoints(Math.max(0.4 * ship.mass, 30))
         case "advanced 1":
           return asPoints(0.3 * ship.mass)
         case "advanced 2":
@@ -122,13 +122,13 @@ const shipComponents = [
     points: (ship: any) => {
       switch (getSystemFromShip(ship, "areaScreen").version) {
         case "standard 1":
-          return asPoints(0.7 * ship.mass)
+          return asPoints(Math.max(0.7 * ship.mass, 15 * 3.5))
         case "standard 2":
-          return asPoints(1.4 * ship.mass)
+          return asPoints(Math.max(1.4 * ship.mass, 30 * 3.5))
         case "advanced 1":
-          return asPoints(1.05 * ship.mass)
+          return asPoints(Math.max(1.05 * ship.mass, 20 * 3.5))
         case "advanced 2":
-          return asPoints(2.1 * ship.mass)
+          return asPoints(Math.max(2.1 * ship.mass, 40 * 3.5))
       }
     },
   },
@@ -154,19 +154,19 @@ const shipComponents = [
     options: ["lvl 1", "lvl 2"],
     mass: (ship: any) =>
       getSystemFromShip(ship, "stealthFields").version === "lvl 2"
-        ? 0.1 * ship.mass
-        : 0.05 * ship.mass,
+        ? asPoints(0.1 * ship.mass)
+        : asPoints(0.05 * ship.mass),
     points: (ship: any) =>
       getSystemFromShip(ship, "stealthFields").version === "lvl 2"
-        ? 0.6 * ship.mass
-        : 0.3 * ship.mass,
+        ? asPoints(0.6 * ship.mass)
+        : asPoints(0.3 * ship.mass),
   },
   {
     value: "holofield",
     label: "Holofield",
     type: "single",
-    mass: (ship: any) => 0.1 * ship.mass,
-    points: (ship: any) => 0.5 * ship.mass,
+    mass: (ship: any) => asPoints(0.1 * ship.mass),
+    points: (ship: any) => asPoints(0.5 * ship.mass),
   },
   {
     value: "scattergun",

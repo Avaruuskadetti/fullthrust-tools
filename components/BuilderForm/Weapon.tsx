@@ -41,7 +41,7 @@ const WeaponBuilder: FC<WeaponBuilderProps> = ({
       ? currentClass.arcs
       : []
   return (
-    <Paper withBorder padding='sm' my={12}>
+    <Paper withBorder padding='sm' mt={12}>
       <Group position='apart' align='flex-start' noWrap>
         <Text weight={600}>
           {`${

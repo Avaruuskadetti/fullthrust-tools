@@ -39,8 +39,10 @@ export const printFighter = (fighter: Fighter) => {
   const modLabels = fighter.mods.map(
     (modValue) => fighters.mods.filter((m) => m.value === modValue)[0].label
   )
+  const type = fighters.types.filter((f) => f.value === fighter.type)[0]
+  const typeLabel = type ? type.label.toLowerCase() : ""
   return `${fighter.groups} ${modLabels.join(", ")} ${
-    fighter.type
+    typeLabel ? typeLabel : ""
   } fighter group${fighter.groups > 1 ? "s" : ""}`
 }
 export const getFighterGroupCount = (ship: any): number => {
@@ -82,11 +84,20 @@ export const getFighterTypeData = (value: string) =>
 export const asPoints = (value: number) => (value > 1 ? Math.round(value) : 1)
 
 const calculateHullCPV = (ship: any) => {
+  const ftlMass =
+    ship.ftlDrive !== "none"
+      ? ship.ftlDrive === "standard"
+        ? ship.mass * mass.stdFtlFactor
+        : ship.mass * mass.advFtlFactor
+      : 0
   const nonCombatMass =
     ship.cargoSpaces * mass.cargoSpace +
     ship.passengerSpaces * mass.passengerSpace +
     ship.marineSpaces * mass.marineSpace +
-    ship.hangars * mass.hangar
+    ship.hangars * mass.hangar +
+    ship.launchTubes * mass.launchTube +
+    ship.fighterRacks * mass.fighterRack +
+    ftlMass
   const cpvMass = Math.round(Math.pow(ship.mass - nonCombatMass, 2) / 100)
   return cpvMass && cpvMass > 0 ? cpvMass : 1
 }
@@ -106,6 +117,14 @@ const getHullFactor = (rows = 4) => {
   }
 }
 
+const calculateArmorValue = (ship: any) => {
+  const armorReducer = (acc: number, curr: number, index: number) =>
+    acc + curr * (index + 1) * 2
+  const armorValue = ship.armor.reduce(armorReducer, 0)
+  const regenValue = ship.regenArmor.reduce(armorReducer, 0) * 2
+  return armorValue + regenValue
+}
+
 const calculateSystemsValue = (ship: any) => {
   const reducer = (prev: any, curr: any) => {
     const points = getShipComponent(curr.value).points(ship)
@@ -114,14 +133,15 @@ const calculateSystemsValue = (ship: any) => {
   return ship.systems.reduce(reducer, 0)
 }
 
-const calculateFightersValue = (ship: any) => {
+const calculateFightersValue = (ship: any, cpv: boolean = false) => {
   const reducer = (acc: number, curr: Fighter) => {
     if (curr.type) {
       const typeData = fighters.types.filter((f) => f.value === curr.type)[0]
       const modData = fighters.mods.filter((f) => curr.mods.includes(f.value))
       const modPoints = modData.reduce((a, m) => a + m.points, 0)
       const points = (typeData.points + modPoints) * curr.groups
-      return acc + points
+      const cpvExtra = curr.mods.includes("long") ? 42 : 30
+      return cpv ? acc + points + cpvExtra : acc + points
     }
     return acc
   }
@@ -142,8 +162,7 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
   const tmf = cpv ? calculateHullCPV(ship) : ship.mass
   /* Hull boxes times hull row factor from helper function */
   const hull = asPoints(ship.hull * getHullFactor(ship.hullRows))
-  /* OBS! NOTE! HUOM! */
-  /* MISSING ARMOR BOXES FROM CALCULATION! SHOULD BE FCTR * HULL + ARMORS */
+  const armor = calculateArmorValue(ship)
   const stealthHull =
     ship.stealthHull !== "none"
       ? ship.stealthHull === "lvl2"
@@ -175,12 +194,13 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
   const catapults = ship.launchCatapults
     ? points.catapultsPerTube * ship.launchTubes
     : 0
-  const hangars =
-    points.hangar * ship.hangars +
-    points.launchTube * ship.launchTubes +
-    catapults
+  const hangars = cpv
+    ? ship.hangars + points.launchTube * ship.launchTubes + catapults
+    : points.hangar * ship.hangars +
+      points.launchTube * ship.launchTubes +
+      catapults
   const racks = 6 * ship.fighterRacks // gunboat racks don't cost points
-  const fighters = calculateFightersValue(ship)
+  const fighters = calculateFightersValue(ship, cpv)
   /* Crew */
   const crew = points.marines * ship.marines + points.dcp * ship.extraDCP
 
@@ -191,6 +211,7 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
   return asPoints(
     (tmf +
       hull +
+      armor +
       stealthHull +
       ftl +
       drive +

@@ -21,6 +21,8 @@ const calculateWeaponMass = (ship: any) => {
 }
 
 export const calculateMass = (ship: any) => {
+  const hull = ship.hull
+
   const drive =
     ship.driveType === "standard"
       ? asMass(mass.stdDriveFactor * ship.drive * ship.mass)
@@ -50,9 +52,21 @@ export const calculateMass = (ship: any) => {
     mass.fighterRack * ship.fighterRacks +
     mass.gunboatRack * ship.gunboatRacks
 
+  const spaces = ship.cargoSpaces + ship.passengerSpaces + ship.marineSpaces
+
   const systems = calculateSystemMass(ship)
   const weapons = calculateWeaponMass(ship)
 
   /* FINAL COMBINING */
-  return drive + ftl + streamlining + armor + hangars + systems + weapons
+  return (
+    hull +
+    drive +
+    ftl +
+    streamlining +
+    armor +
+    hangars +
+    spaces +
+    systems +
+    weapons
+  )
 }
