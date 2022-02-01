@@ -15,7 +15,19 @@ const ChipIcon: FC<ChipIconProps> = ({ m, w, h }) => (
       alignItems: "center",
     }}
   >
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+    <svg
+      aria-hidden='true'
+      role='img'
+      width='16'
+      height='16'
+      style={{
+        display: "inline-block",
+        userSelect: "none",
+        verticalAlign: "text-bottom",
+        overflow: "visible",
+      }}
+      viewBox='0 0 512 512'
+    >
       <title>Hardware Chip</title>
       <path
         d='M352 128H160a32 32 0 00-32 32v192a32 32 0 0032 32h192a32 32 0 0032-32V160a32 32 0 00-32-32zm0 216a8 8 0 01-8 8H168a8 8 0 01-8-8V168a8 8 0 018-8h176a8 8 0 018 8z'

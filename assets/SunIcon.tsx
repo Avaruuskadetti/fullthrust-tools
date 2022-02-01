@@ -9,7 +9,19 @@ interface SunIconInterface {
 
 const SunIcon: FC<SunIconInterface> = ({ m, size, color }) => (
   <BaseIcon m={m} size={size} color={color}>
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 1200'>
+    <svg
+      aria-hidden='true'
+      role='img'
+      width='16'
+      height='16'
+      style={{
+        display: "inline-block",
+        userSelect: "none",
+        verticalAlign: "text-bottom",
+        overflow: "visible",
+      }}
+      viewBox='0 0 1200 1200'
+    >
       <path
         fill='currentColor'
         d='M195.2,470.17a427.29,427.29,0,0,0-.4,258.39L.5,599.5Z'

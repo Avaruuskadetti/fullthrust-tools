@@ -15,7 +15,19 @@ const ChipIcon: FC<ChipIconProps> = ({ m, w, h }) => (
       alignItems: "center",
     }}
   >
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+    <svg
+      aria-hidden='true'
+      role='img'
+      width='16'
+      height='16'
+      style={{
+        display: "inline-block",
+        userSelect: "none",
+        verticalAlign: "text-bottom",
+        overflow: "visible",
+      }}
+      viewBox='0 0 512 512'
+    >
       <path
         stroke='currentColor'
         fill='currentColor'

@@ -10,7 +10,19 @@ const StarIcon = ({ p }: StarIconProps) => (
       alignItems: "center",
     }}
   >
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+    <svg
+      aria-hidden='true'
+      role='img'
+      width='16'
+      height='16'
+      style={{
+        display: "inline-block",
+        userSelect: "none",
+        verticalAlign: "text-bottom",
+        overflow: "visible",
+      }}
+      viewBox='0 0 512 512'
+    >
       <path
         d='M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z'
         fill='none'

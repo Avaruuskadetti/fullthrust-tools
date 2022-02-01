@@ -20,14 +20,14 @@ const DiscordIcon: FC<DiscordIconInterface> = ({ m, size }) => (
       role='img'
       width='16'
       height='16'
-      fill='none'
-      viewBox='0 0 256 199'
       style={{
         display: "inline-block",
         userSelect: "none",
         verticalAlign: "text-bottom",
         overflow: "visible",
       }}
+      fill='none'
+      viewBox='0 0 256 199'
     >
       <path
         fill='currentColor'
