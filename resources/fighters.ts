@@ -1,3 +1,10 @@
+export interface fighter {
+  groups: number
+  id: number
+  mods: string[]
+  type: string
+}
+
 export const fighters = {
   types: [
     { value: "standard", label: "Standard", points: 18 },

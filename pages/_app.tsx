@@ -48,6 +48,11 @@ export default function App(props: AppProps) {
       const csInStorage = localStorage.getItem("colorScheme")
       if (csInStorage) {
         setColorScheme(csInStorage as ColorScheme)
+      } else if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        setColorScheme("dark")
       }
     }
   }, [])
@@ -194,7 +199,7 @@ export default function App(props: AppProps) {
                         : theme.colors.gray[4]
                     }
                   >
-                    Full Thrust Fleet Tool (beta 0.1)
+                    Full Thrust Fleet Tool
                   </Text>
                 </div>
               </Header>
