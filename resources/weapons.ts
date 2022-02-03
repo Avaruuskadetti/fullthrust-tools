@@ -979,6 +979,54 @@ export const weaponBlueprints: weaponBlueprint[] = [
       }
     },
   },
+  {
+    value: "plasmaBoltLauncher",
+    label: "Plasma Bolt Launcher",
+    classes: [
+      { value: "1", label: "1", arcs: ["1", "2", "3"] },
+      { value: "2", label: "2", arcs: ["1", "2", "3"] },
+      { value: "3", label: "3", arcs: ["1", "2", "3"] },
+      { value: "4", label: "4", arcs: ["1", "2", "3"] },
+      { value: "5", label: "5", arcs: ["1", "2", "3"] },
+      { value: "6", label: "6", arcs: ["1", "2", "3"] },
+    ],
+    points: (w: weapon) => {
+      switch (w.class) {
+        case "1":
+          return calcPoints(2, 1, 3, w.arcs, w.count)
+        case "2":
+          return calcPoints(4, 2, 3, w.arcs, w.count)
+        case "3":
+          return calcPoints(6, 3, 3, w.arcs, w.count)
+        case "4":
+          return calcPoints(8, 4, 3, w.arcs, w.count)
+        case "5":
+          return calcPoints(10, 5, 3, w.arcs, w.count)
+        case "6":
+          return calcPoints(12, 6, 3, w.arcs, w.count)
+        default:
+          return 0
+      }
+    },
+    mass: (w: weapon) => {
+      switch (w.class) {
+        case "1":
+          return calcMass(2, 1, w.arcs, w.count)
+        case "2":
+          return calcMass(4, 2, w.arcs, w.count)
+        case "3":
+          return calcMass(6, 3, w.arcs, w.count)
+        case "4":
+          return calcMass(8, 4, w.arcs, w.count)
+        case "5":
+          return calcMass(10, 5, w.arcs, w.count)
+        case "6":
+          return calcMass(12, 6, w.arcs, w.count)
+        default:
+          return 0
+      }
+    },
+  },
 ]
 /*
 Boarding torpedo launcher is in ordnance instead

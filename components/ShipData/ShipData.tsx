@@ -21,10 +21,12 @@ import FighterRacks from "./FighterRacks"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import WeaponsData from "./Weapons"
+import SpinalMountsData from "./SpinalMounts"
 import ClipboardIcon from "../../assets/ClipboardIcon"
+import { ship } from "../../resources/ship"
 
 interface ShipDataViewProps {
-  ship: any
+  ship: ship
   withPaper?: boolean
 }
 const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
@@ -119,6 +121,7 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
         <Fighters ship={ship} />
         <Systems ship={ship} />
         <WeaponsData ship={ship} />
+        <SpinalMountsData ship={ship} />
       </div>
       <Divider my='sm' />
       <Button my='sm' onClick={copyToClipboard} leftIcon={<ClipboardIcon />}>

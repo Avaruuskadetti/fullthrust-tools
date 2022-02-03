@@ -33,6 +33,7 @@ const baseShip: ship = {
   systems: [],
   weapons: [],
   ordnance: [],
+  spinalMounts: [],
 }
 
 const HomePage: NextPage = () => {

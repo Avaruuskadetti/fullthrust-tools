@@ -50,26 +50,38 @@ const Page: NextPage = () => {
       <Title order={3}>Technical compromises</Title>
       <Text my='sm'>
         <p>
-          Class 1 short range K-Gun has an option: &quot;Short range K-1&apos;s
-          can be bought in pairs for 3 mass, or they can be excluded from your
-          game.&quot; This would require a much more complicated solution for
-          all weapons to implement. Instead, individual short range class 1
-          K-Guns cost 1.5 mass with the end mass of all K-Guns rounded up to
-          nearest integer.
+          <strong>Class 1 short range K-Gun</strong> has an option: &quot;Short
+          range K-1&apos;s can be bought in pairs for 3 mass, or they can be
+          excluded from your game.&quot; This would require a much more
+          complicated solution for all weapons to implement. Instead, individual
+          short range class 1 K-Guns cost 1.5 mass with the end mass of all
+          K-Guns rounded up to nearest integer.
         </p>
         <p>
-          Boarding Torpedoes are categorised as ordnance instead of direct-fire
-          weapons for ease of implementation (as they&apos;re the only direct
-          fire weapon using magazines).
+          <strong>Boarding Torpedoes</strong> are categorised as ordnance
+          instead of direct-fire weapons for ease of implementation (as
+          they&apos;re the only direct fire weapon using magazines).
         </p>
         <p>
-          Light fighters both as a fighter type <em>and</em> a modification
-          would be kind of complicated to implement in the current fighter code.
-          For now the builder handles light fighters only as a base fighter
-          type, allowing all modifications to be added to them unlike Continuum
-          rules. Players should not pick illegal mods (heavy, torpedo, long
-          range) to their light fighters if their playgroup doesn&apos;t allow
-          it.
+          Likewise, <strong>Plasma Bolt Launcher</strong> is categorised as a
+          direct-fire weapon instead of ornance. Ordnance implementation
+          doesn&apos;t have definitions for arc selection and Plasma Bolt
+          Launcher doesn&apos;t use magazines.
+        </p>
+        <p>
+          <strong>Light fighters</strong> both as a fighter type <em>and</em> a
+          modification would be kind of complicated to implement in the current
+          fighter code. For now the builder handles light fighters only as a
+          base fighter type, allowing all modifications to be added to them
+          unlike Continuum rules. Players should not pick illegal mods (heavy,
+          torpedo, long range) to their light fighters if their playgroup
+          doesn&apos;t allow it.
+        </p>
+        <p>
+          <strong>Spinal Mount Nova Cannon</strong> and{" "}
+          <strong>Wave Gun</strong> are yet to be implemented. Rules are unclear
+          whether they count as spinal weapons and respect their ship mass
+          limits.
         </p>
       </Text>
     </Paper>

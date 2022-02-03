@@ -24,9 +24,11 @@ import Fighters from "./Fighters"
 import Hangars from "./Hangars"
 import Weapons from "./Weapons"
 import Ordnances from "./Ordnances"
+import SpinalMounts from "./SpinalMounts"
+import { ship } from "../../resources/ship"
 
 interface BuilderFormProps {
-  ship: any
+  ship: ship
   setShip: any
 }
 
@@ -335,6 +337,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
       <Systems ship={ship} setShip={setShip} />
       <Weapons ship={ship} setShip={setShip} />
       <Ordnances ship={ship} setShip={setShip} />
+      <SpinalMounts ship={ship} setShip={setShip} />
     </>
   )
 }

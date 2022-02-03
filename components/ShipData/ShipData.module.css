@@ -58,7 +58,7 @@
     right: 0;
     width: calc((100vw - 300px - 6rem) / 2);
   }
-  .button {
+  .buttonContainer {
     display: none;
   }
 }

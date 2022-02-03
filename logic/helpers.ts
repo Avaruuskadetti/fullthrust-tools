@@ -4,6 +4,9 @@ import shipComponents from "../resources/shipComponents"
 import mass from "../resources/masses"
 import { fighters } from "../resources/fighters"
 import { getWeaponBlueprint, weapon } from "../resources/weapons"
+import { ship } from "../resources/ship"
+import { getOrdnanceBlueprint, ordnance } from "../resources/ordnance"
+import { getSpinalBlueprint, spinalmount } from "../resources/spinalMounts"
 
 /* Divides hull boxes to rows, returns an array with number of boxes/row */
 export const calculateHullArray = (hull: number, rows: number) => {
@@ -70,7 +73,7 @@ export const getAvailableHangars = (ship: any) => {
   )
 }
 /* Checks for robot-viable hangar & rack space */
-export const getAvailableRobotHangars = (ship: any) =>
+export const getAvailableRobotHangars = (ship: ship) =>
   ship.hangars +
   ship.fighterRacks -
   getFighterGroupCount(ship) -
@@ -83,7 +86,7 @@ export const getFighterTypeData = (value: string) =>
 /* Helper functions */
 export const asPoints = (value: number) => (value > 1 ? Math.round(value) : 1)
 
-const calculateHullCPV = (ship: any) => {
+const calculateHullCPV = (ship: ship) => {
   const ftlMass =
     ship.ftlDrive !== "none"
       ? ship.ftlDrive === "standard"
@@ -117,7 +120,7 @@ const getHullFactor = (rows = 4) => {
   }
 }
 
-const calculateArmorValue = (ship: any) => {
+const calculateArmorValue = (ship: ship) => {
   const armorReducer = (acc: number, curr: number, index: number) =>
     acc + curr * (index + 1) * 2
   const armorValue = ship.armor.reduce(armorReducer, 0)
@@ -125,15 +128,15 @@ const calculateArmorValue = (ship: any) => {
   return armorValue + regenValue
 }
 
-const calculateSystemsValue = (ship: any) => {
-  const reducer = (prev: any, curr: any) => {
+const calculateSystemsValue = (ship: ship) => {
+  const reducer = (prev: number, curr: any) => {
     const points = getShipComponent(curr.value).points(ship)
     return prev + points
   }
   return ship.systems.reduce(reducer, 0)
 }
 
-const calculateFightersValue = (ship: any, cpv: boolean = false) => {
+const calculateFightersValue = (ship: ship, cpv: boolean = false) => {
   const reducer = (acc: number, curr: Fighter) => {
     if (curr.type) {
       const typeData = fighters.types.filter((f) => f.value === curr.type)[0]
@@ -148,13 +151,31 @@ const calculateFightersValue = (ship: any, cpv: boolean = false) => {
   return ship.fighters.reduce(reducer, 0)
 }
 
-const calculateWeaponsValue = (ship: any) => {
+const calculateWeaponsValue = (ship: ship) => {
   const reducer = (acc: number, curr: weapon) => {
     const bp = getWeaponBlueprint(curr.value)
     const points = bp.points(curr, ship)
     return acc + points
   }
   return ship.weapons.reduce(reducer, 0)
+}
+
+const calculateOrdnanceValue = (ship: ship) => {
+  const reducer = (acc: number, curr: ordnance) => {
+    const bp = getOrdnanceBlueprint(curr.value)
+    const points = bp.points(curr)
+    return acc + points
+  }
+  return ship.ordnance.reduce(reducer, 0)
+}
+
+const calculateSpinalValue = (ship: ship) => {
+  const reducer = (acc: number, curr: spinalmount) => {
+    const bp = getSpinalBlueprint(curr.value)
+    const points = bp.points(curr)
+    return acc + points
+  }
+  return ship.spinalMounts.reduce(reducer, 0)
 }
 
 /* Main scoring function */
@@ -206,6 +227,8 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
 
   const systems = calculateSystemsValue(ship)
   const weapons = calculateWeaponsValue(ship)
+  const ordnance = calculateOrdnanceValue(ship)
+  const spinal = calculateSpinalValue(ship)
   const flawed = ship.flawed ? 0.8 : 1
   /* FINAL CALCULATION */
   return asPoints(
@@ -221,7 +244,9 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
       fighters +
       crew +
       systems +
-      weapons) *
+      weapons +
+      ordnance +
+      spinal) *
       flawed
   )
 }

@@ -1,6 +1,7 @@
 import { fighter } from "./fighters"
 import { weapon } from "./weapons"
 import { ordnance } from "./ordnance"
+import { spinalmount } from "./spinalMounts"
 
 export interface ship {
   id: number
@@ -30,4 +31,5 @@ export interface ship {
   systems: any
   weapons: weapon[]
   ordnance: ordnance[]
+  spinalMounts: spinalmount[]
 }

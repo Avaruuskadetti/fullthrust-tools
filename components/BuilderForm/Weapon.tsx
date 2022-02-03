@@ -8,8 +8,7 @@ import {
   Button,
   Group,
 } from "@mantine/core"
-import { weaponBlueprint, weaponClass } from "../../resources/weapons"
-import { weapon } from "../../resources/weapons"
+import { weaponBlueprint, weaponClass, weapon } from "../../resources/weapons"
 
 interface WeaponBuilderProps {
   weapon: weapon

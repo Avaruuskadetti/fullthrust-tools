@@ -1,5 +1,8 @@
 import mass from "../resources/masses"
+import { getOrdnanceBlueprint, ordnance } from "../resources/ordnance"
+import { ship } from "../resources/ship"
 import shipComponents from "../resources/shipComponents"
+import { getSpinalBlueprint, spinalmount } from "../resources/spinalMounts"
 import { getWeaponBlueprint, weapon } from "../resources/weapons"
 import { arraySum, getShipComponent } from "./helpers"
 
@@ -18,6 +21,18 @@ const calculateWeaponMass = (ship: any) => {
   const reducer = (acc: number, curr: weapon) =>
     acc + Math.round(getWeaponBlueprint(curr.value).mass(curr, ship))
   return ship.weapons.reduce(reducer, 0)
+}
+
+const calculateOrdnanceMass = (ship: ship) => {
+  const reducer = (acc: number, curr: ordnance) =>
+    acc + Math.round(getOrdnanceBlueprint(curr.value).mass(curr))
+  return ship.ordnance.reduce(reducer, 0)
+}
+
+const calculateSpinalMountsMass = (ship: ship) => {
+  const reducer = (acc: number, curr: spinalmount) =>
+    acc + Math.round(curr.mass * curr.count)
+  return ship.spinalMounts.reduce(reducer, 0)
 }
 
 export const calculateMass = (ship: any) => {
@@ -56,6 +71,8 @@ export const calculateMass = (ship: any) => {
 
   const systems = calculateSystemMass(ship)
   const weapons = calculateWeaponMass(ship)
+  const ordnance = calculateOrdnanceMass(ship)
+  const spinals = calculateSpinalMountsMass(ship)
 
   /* FINAL COMBINING */
   return (
@@ -67,6 +84,8 @@ export const calculateMass = (ship: any) => {
     hangars +
     spaces +
     systems +
-    weapons
+    weapons +
+    ordnance +
+    spinals
   )
 }

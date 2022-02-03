@@ -1,4 +1,5 @@
 import { asPoints } from "../logic/helpers"
+import { ship } from "./ship"
 const getSystemFromShip = (ship: any, system: string) =>
   ship.systems.filter((s: any) => s.value === system)[0]
 
@@ -254,6 +255,20 @@ const shipComponents = [
     type: "single",
     mass: (ship: any) => 1,
     points: (ship: any) => 5,
+  },
+  {
+    value: "tuffleyCloak",
+    label: "Tuffley Cloak",
+    type: "single",
+    mass: (ship: ship) => 0.1 * ship.mass,
+    points: (ship: ship) => ship.mass,
+  },
+  {
+    value: "reflexField",
+    label: "Reflex Field",
+    type: "single",
+    mass: (ship: ship) => 0.1 * ship.mass,
+    points: (ship: ship) => 0.6 * ship.mass,
   },
 ]
 export default shipComponents
