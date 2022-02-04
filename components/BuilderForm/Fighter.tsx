@@ -11,8 +11,11 @@ import {
   Chips,
   Chip,
   Alert,
+  Badge,
+  Divider,
 } from "@mantine/core"
 import { fighters } from "../../resources/fighters"
+import ValueBadges from "./ValueBadges"
 interface FighterProps {
   fighter: any
   removeFighter: any
@@ -30,6 +33,21 @@ const Fighter: FC<FighterProps> = ({
     const success = editFighter(fighter.id, "mods", val)
     setRobotError(!success)
   }
+
+  const getPoints = (cpv: boolean) => {
+    if (fighter.type) {
+      const typeData = fighters.types.filter((f) => f.value === fighter.type)[0]
+      const modData = fighters.mods.filter((f) =>
+        fighter.mods.includes(f.value)
+      )
+      const modPoints = modData.reduce((a, m) => a + m.points, 0)
+      const points = (typeData.points + modPoints) * fighter.groups
+      const cpvExtra = fighter.mods.includes("long") ? 42 : 30
+      return cpv ? points + cpvExtra : points
+    }
+    return 0
+  }
+
   return (
     <Paper
       key={fighter.id}
@@ -67,6 +85,7 @@ const Fighter: FC<FighterProps> = ({
               input: { outline: fighter.type === "" ? "1px solid red" : "" },
             }}
             searchable
+            clearable
             placeholder='type to search'
             label='Type'
             data={fighters.types}
@@ -89,6 +108,8 @@ const Fighter: FC<FighterProps> = ({
           Cannot change from robot to human, no space in hangars!
         </Alert>
       )}
+      <Divider my='md' />
+      <ValueBadges npv={getPoints(false)} cpv={getPoints(true)} />
     </Paper>
   )
 }

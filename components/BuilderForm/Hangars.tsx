@@ -1,11 +1,14 @@
 import { FC } from "react"
-import { Group, NumberInput, Switch, Divider } from "@mantine/core"
+import { Group, NumberInput, Switch, Divider, Badge } from "@mantine/core"
 import {
   getFighterGroupCount,
   getRobotGroupCount,
   getAvailableHangars,
   getAvailableRobotHangars,
+  calculateHangarsValue,
 } from "../../logic/helpers"
+import mass from "../../resources/masses"
+import { calculateHangarMass } from "../../logic/massCalculation"
 interface HangarsProps {
   ship: any
   setShip: any
@@ -62,6 +65,17 @@ const Hangars: FC<HangarsProps> = ({ ship, setShip }) => {
           onChange={(value) => setShip({ ...ship, gunboatRacks: value })}
           label='Gunboat racks'
         />
+      </Group>
+      <Group mt='md' spacing='xs'>
+        <Badge variant='outline' color='blue'>
+          {calculateHangarMass(ship)} Mass
+        </Badge>
+        <Badge variant='outline' color='green'>
+          {calculateHangarsValue(ship)} NPV
+        </Badge>
+        <Badge variant='outline' color='orange'>
+          {calculateHangarsValue(ship, true)} CPV
+        </Badge>
       </Group>
       <Divider mt={16} mb={8} />
     </>

@@ -7,6 +7,7 @@ import { getWeaponBlueprint, weapon } from "../resources/weapons"
 import { ship } from "../resources/ship"
 import { getOrdnanceBlueprint, ordnance } from "../resources/ordnance"
 import { getSpinalBlueprint, spinalmount } from "../resources/spinalMounts"
+import masses from "../resources/masses"
 
 /* Divides hull boxes to rows, returns an array with number of boxes/row */
 export const calculateHullArray = (hull: number, rows: number) => {
@@ -86,21 +87,21 @@ export const getFighterTypeData = (value: string) =>
 /* Helper functions */
 export const asPoints = (value: number) => (value > 1 ? Math.round(value) : 1)
 
-const calculateHullCPV = (ship: ship) => {
-  const ftlMass =
-    ship.ftlDrive !== "none"
-      ? ship.ftlDrive === "standard"
-        ? ship.mass * mass.stdFtlFactor
-        : ship.mass * mass.advFtlFactor
-      : 0
+export const calculateHullCPV = (ship: ship) => {
+  // const ftlMass =
+  //   ship.ftlDrive !== "none"
+  //     ? ship.ftlDrive === "standard"
+  //       ? ship.mass * mass.stdFtlFactor
+  //       : ship.mass * mass.advFtlFactor
+  //     : 0
+  // INCLUDE ABOVE FTLMASS IF FTL MASS IS INCLUDED AS NON-COMBAT MASS! THEN ALSO REDUCE FTL POINTS TO 0 SOMEWHERE
   const nonCombatMass =
     ship.cargoSpaces * mass.cargoSpace +
     ship.passengerSpaces * mass.passengerSpace +
     ship.marineSpaces * mass.marineSpace +
     ship.hangars * mass.hangar +
     ship.launchTubes * mass.launchTube +
-    ship.fighterRacks * mass.fighterRack +
-    ftlMass
+    ship.fighterRacks * mass.fighterRack
   const cpvMass = Math.round(Math.pow(ship.mass - nonCombatMass, 2) / 100)
   return cpvMass && cpvMass > 0 ? cpvMass : 1
 }
@@ -120,7 +121,7 @@ const getHullFactor = (rows = 4) => {
   }
 }
 
-const calculateArmorValue = (ship: ship) => {
+export const calculateArmorValue = (ship: ship) => {
   const armorReducer = (acc: number, curr: number, index: number) =>
     acc + curr * (index + 1) * 2
   const armorValue = ship.armor.reduce(armorReducer, 0)
@@ -136,7 +137,22 @@ const calculateSystemsValue = (ship: ship) => {
   return ship.systems.reduce(reducer, 0)
 }
 
-const calculateFightersValue = (ship: ship, cpv: boolean = false) => {
+export const calculateHangarsValue = (ship: ship, cpv?: boolean) => {
+  const catapults = ship.launchCatapults
+    ? points.catapultsPerTube * ship.launchTubes
+    : 0
+  return cpv
+    ? ship.hangars * masses.hangar +
+        ship.launchTubes * masses.launchTube +
+        ship.fighterRacks * masses.fighterRack +
+        catapults
+    : points.hangar * ship.hangars +
+        points.launchTube * ship.launchTubes +
+        points.rack * ship.fighterRacks +
+        catapults
+}
+
+export const calculateFightersValue = (ship: ship, cpv: boolean = false) => {
   const reducer = (acc: number, curr: Fighter) => {
     if (curr.type) {
       const typeData = fighters.types.filter((f) => f.value === curr.type)[0]
@@ -178,49 +194,56 @@ const calculateSpinalValue = (ship: ship) => {
   return ship.spinalMounts.reduce(reducer, 0)
 }
 
-/* Main scoring function */
-export const calculateShipValue = (ship: any, cpv: boolean = false) => {
-  const tmf = cpv ? calculateHullCPV(ship) : ship.mass
-  /* Hull boxes times hull row factor from helper function */
-  const hull = asPoints(ship.hull * getHullFactor(ship.hullRows))
-  const armor = calculateArmorValue(ship)
-  const stealthHull =
-    ship.stealthHull !== "none"
-      ? ship.stealthHull === "lvl2"
-        ? points.stealthHullLvl2Factor * (ship.hull + arraySum(ship.armor))
-        : points.stealthHullLvl1Factor * (ship.hull + arraySum(ship.armor))
-      : 0
-
-  /* 2x mass std, 3x mass adv. No asPoints: no need for rounding and 0 points possible */
-  const ftl =
+export const calculateFtlValue = (ship: ship) =>
+  asPoints(
     ship.ftlDrive === "standard"
       ? points.ftlStdFactor * ship.mass
       : ship.ftlDrive === "advanced"
       ? points.ftlAdvFactor * ship.mass
       : 0
-  /* Drive mass: 0.05 * drive rating * mass, points 2x std, 3x adv  */
-  const drive = asPoints(
+  )
+
+export const calculateDriveValue = (ship: ship) =>
+  asPoints(
     ship.driveType === "standard"
       ? points.driveStdFactor * ship.drive * ship.mass
       : points.driveAdvFactor * ship.drive * ship.mass
   )
-  /* Streamlining */
-  const streamlining =
-    ship.streamlining !== "none"
-      ? ship.streamlining === "full"
-        ? asPoints(points.fullStreamliningFactor * ship.mass)
-        : asPoints(points.partialStreamliningFactor * ship.mass)
-      : 0
-  /* Hangars & racks */
-  const catapults = ship.launchCatapults
-    ? points.catapultsPerTube * ship.launchTubes
+
+export const calculateStreamliningValue = (ship: ship) =>
+  ship.streamlining !== "none"
+    ? ship.streamlining === "full"
+      ? asPoints(points.fullStreamliningFactor * ship.mass)
+      : asPoints(points.partialStreamliningFactor * ship.mass)
     : 0
-  const hangars = cpv
-    ? ship.hangars + points.launchTube * ship.launchTubes + catapults
-    : points.hangar * ship.hangars +
-      points.launchTube * ship.launchTubes +
-      catapults
-  const racks = 6 * ship.fighterRacks // gunboat racks don't cost points
+
+export const calculateHullValue = (ship: ship) =>
+  asPoints(ship.hull * getHullFactor(ship.hullRows))
+
+export const calculateStealthHullValue = (ship: ship) =>
+  ship.stealthHull !== "none"
+    ? ship.stealthHull === "lvl2"
+      ? points.stealthHullLvl2Factor * (ship.hull + arraySum(ship.armor))
+      : points.stealthHullLvl1Factor * (ship.hull + arraySum(ship.armor))
+    : 0
+/* Main scoring function */
+export const calculateShipValue = (ship: any, cpv: boolean = false) => {
+  const tmf = cpv ? calculateHullCPV(ship) : ship.mass
+  /* Hull boxes times hull row factor from helper function */
+  const hull = calculateHullValue(ship)
+  const armor = calculateArmorValue(ship)
+  const stealthHull = calculateStealthHullValue(ship)
+
+  /* 2x mass std, 3x mass adv. No asPoints: no need for rounding and 0 points possible */
+  const ftl = calculateFtlValue(ship)
+  /* Drive mass: 0.05 * drive rating * mass, points 2x std, 3x adv  */
+  const drive = calculateDriveValue(ship)
+  /* Streamlining */
+  const streamlining = calculateStreamliningValue(ship)
+  /* Hangars & racks */
+
+  const hangars = calculateHangarsValue(ship, cpv) // includes racks and tubes too
+  // gunboat racks don't cost points
   const fighters = calculateFightersValue(ship, cpv)
   /* Crew */
   const crew = points.marines * ship.marines + points.dcp * ship.extraDCP
@@ -240,7 +263,6 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
       drive +
       streamlining +
       hangars +
-      racks +
       fighters +
       crew +
       systems +

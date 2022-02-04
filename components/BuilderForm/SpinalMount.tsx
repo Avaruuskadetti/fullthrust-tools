@@ -8,6 +8,7 @@ import {
   Button,
   Group,
   Alert,
+  Badge,
 } from "@mantine/core"
 import {
   spinalmount,
@@ -84,6 +85,14 @@ const SpinalMountBuilder: FC<spinalmountBuilderProps> = ({
           {`Can't add more spinal mounts! Limit is  ${spinalLimits.maxPerMassUnit} mass of spinal
           mounts per ${spinalLimits.massUnit} ship mass.`}
         </Alert>
+        <Group mt='sm' spacing='xs'>
+          <Badge variant='outline' color='blue'>
+            {spinalmount.mass * spinalmount.count} mass
+          </Badge>
+          <Badge variant='outline' color='green'>
+            {blueprint.points(spinalmount)} points
+          </Badge>
+        </Group>
       </Paper>
     </>
   )

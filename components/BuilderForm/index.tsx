@@ -16,16 +16,34 @@ import {
   Text,
   Divider,
   MultiSelect,
+  Badge,
 } from "@mantine/core"
 import RocketIcon from "../../assets/RocketIcon"
-import { countDCP } from "../../logic/helpers"
+import {
+  calculateArmorValue,
+  calculateDriveValue,
+  calculateFtlValue,
+  calculateHullCPV,
+  calculateHullValue,
+  calculateStealthHullValue,
+  calculateStreamliningValue,
+  countDCP,
+} from "../../logic/helpers"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import Hangars from "./Hangars"
 import Weapons from "./Weapons"
 import Ordnances from "./Ordnances"
 import SpinalMounts from "./SpinalMounts"
+import ValueBadges from "./ValueBadges"
 import { ship } from "../../resources/ship"
+import points from "../../resources/points"
+import {
+  calculateArmorMass,
+  calculateDriveMass,
+  calculateFtlMass,
+  calculateStreamliningMass,
+} from "../../logic/massCalculation"
 
 interface BuilderFormProps {
   ship: ship
@@ -222,8 +240,6 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
             ))}
           </div>
         </SimpleGrid>
-
-        <Divider mt={16} mb={8} />
         <InputWrapper label='Stealth hull'>
           <Chips
             mb={8}
@@ -235,6 +251,22 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
             <Chip value='lvl2'>Lvl 2</Chip>
           </Chips>
         </InputWrapper>
+        <Divider mt='md' />
+        <ValueBadges
+          mass={ship.mass + calculateArmorMass(ship)}
+          npv={
+            ship.mass +
+            calculateHullValue(ship) +
+            calculateArmorValue(ship) +
+            calculateStealthHullValue(ship)
+          }
+          cpv={
+            calculateHullCPV(ship) +
+            calculateHullValue(ship) +
+            calculateArmorValue(ship) +
+            calculateStealthHullValue(ship)
+          }
+        />
         <Divider mt={16} mb={8} />
         <Switch
           disabled={ship.hullRows === 3 || ship.mass < 60}
@@ -288,6 +320,19 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
             <Chip value='full'>Full</Chip>
           </Chips>
         </InputWrapper>
+        <Divider mt='md' />
+        <ValueBadges
+          mass={
+            calculateDriveMass(ship) +
+            calculateFtlMass(ship) +
+            calculateStreamliningMass(ship)
+          }
+          npv={
+            calculateDriveValue(ship) +
+            calculateFtlValue(ship) +
+            calculateStreamliningValue(ship)
+          }
+        />
       </Paper>
       {/* Additional primary ship systems */}
       <Paper my={16} padding='md' withBorder shadow='sm'>
@@ -315,6 +360,9 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
             label='Marine'
           />
         </Group>
+        <ValueBadges
+          mass={ship.cargoSpaces + ship.passengerSpaces + ship.marineSpaces}
+        />
         <Divider mt={16} mb={8} />
         <Text weight={600}>Additional crew</Text>
         <Group noWrap>
@@ -333,6 +381,9 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
             label='Marines'
           />
         </Group>
+        <ValueBadges
+          npv={ship.marines * points.marines + ship.extraDCP * points.dcp}
+        />
       </Paper>
       <Systems ship={ship} setShip={setShip} />
       <Weapons ship={ship} setShip={setShip} />

@@ -7,12 +7,15 @@ import {
   NumberInput,
   Button,
   Group,
+  Badge,
 } from "@mantine/core"
 import { weaponBlueprint, weaponClass, weapon } from "../../resources/weapons"
+import { ship } from "../../resources/ship"
 
 interface WeaponBuilderProps {
   weapon: weapon
   blueprint: weaponBlueprint
+  ship: ship
   setWeapon: (weapon: weapon) => void
   deleteWeapon: () => void
 }
@@ -20,6 +23,7 @@ interface WeaponBuilderProps {
 const WeaponBuilder: FC<WeaponBuilderProps> = ({
   weapon,
   blueprint,
+  ship,
   setWeapon,
   deleteWeapon,
 }) => {
@@ -101,6 +105,14 @@ const WeaponBuilder: FC<WeaponBuilderProps> = ({
           onChange={(value: string) => setWeapon({ ...weapon, variant: value })}
         />
       )}
+      <Group mt='sm' spacing='xs'>
+        <Badge variant='outline' color='blue'>
+          {blueprint.mass(weapon, ship)} mass
+        </Badge>
+        <Badge variant='outline' color='green'>
+          {blueprint.points(weapon, ship)} points
+        </Badge>
+      </Group>
     </Paper>
   )
 }

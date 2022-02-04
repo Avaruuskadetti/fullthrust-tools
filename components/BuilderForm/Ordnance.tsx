@@ -7,7 +7,7 @@ import {
   Button,
   Group,
   Grid,
-  InputWrapper,
+  Badge,
 } from "@mantine/core"
 import {
   ordnanceBlueprint,
@@ -110,6 +110,14 @@ const OrdnanceBuilder: FC<ordnanceBuilderProps> = ({
             </Grid.Col>
           )}
       </Grid>
+      <Group mt='sm' spacing='xs'>
+        <Badge variant='outline' color='blue'>
+          {blueprint.mass(ordnance)} mass
+        </Badge>
+        <Badge variant='outline' color='green'>
+          {blueprint.points(ordnance)} points
+        </Badge>
+      </Group>
     </Paper>
   )
 }

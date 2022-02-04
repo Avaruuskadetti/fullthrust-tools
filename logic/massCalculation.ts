@@ -1,13 +1,37 @@
 import mass from "../resources/masses"
 import { getOrdnanceBlueprint, ordnance } from "../resources/ordnance"
 import { ship } from "../resources/ship"
-import shipComponents from "../resources/shipComponents"
-import { getSpinalBlueprint, spinalmount } from "../resources/spinalMounts"
+import { spinalmount } from "../resources/spinalMounts"
 import { getWeaponBlueprint, weapon } from "../resources/weapons"
 import { arraySum, getShipComponent } from "./helpers"
 
 const asMass = (value: number) =>
   Math.round(value) > 0 ? Math.round(value) : 1
+
+export const calculateDriveMass = (ship: ship) =>
+  ship.driveType === "standard"
+    ? asMass(mass.stdDriveFactor * ship.drive * ship.mass)
+    : asMass(mass.advDriveFactor * ship.drive * ship.mass)
+
+export const calculateFtlMass = (ship: ship) =>
+  ship.ftlDrive !== "none"
+    ? ship.ftlDrive === "standard"
+      ? asMass(mass.stdFtlFactor * ship.mass)
+      : asMass(mass.advFtlFactor * ship.mass)
+    : 0
+
+export const calculateStreamliningMass = (ship: ship) =>
+  ship.streamlining !== "none"
+    ? ship.streamlining === "full"
+      ? mass.fullStreamliningFactor * ship.mass
+      : mass.partialStreamliningFactor * ship.mass
+    : 0
+
+export const calculateHangarMass = (ship: ship) =>
+  mass.hangar * ship.hangars +
+  mass.launchTube * ship.launchTubes +
+  mass.fighterRack * ship.fighterRacks +
+  mass.gunboatRack * ship.gunboatRacks
 
 const calculateSystemMass = (ship: any) => {
   const systemMass = ship.systems.reduce(
@@ -35,37 +59,21 @@ const calculateSpinalMountsMass = (ship: ship) => {
   return ship.spinalMounts.reduce(reducer, 0)
 }
 
+export const calculateArmorMass = (ship: ship) =>
+  mass.armor * arraySum(ship.armor) +
+  mass.regenArmor * arraySum(ship.regenArmor)
+
 export const calculateMass = (ship: any) => {
   const hull = ship.hull
 
-  const drive =
-    ship.driveType === "standard"
-      ? asMass(mass.stdDriveFactor * ship.drive * ship.mass)
-      : asMass(mass.advDriveFactor * ship.drive * ship.mass)
+  const drive = calculateDriveMass(ship)
 
-  const ftl =
-    ship.ftlType !== "none"
-      ? ship.ftlType === "standard"
-        ? asMass(mass.stdFtlFactor * ship.mass)
-        : asMass(mass.advFtlFactor * ship.mass)
-      : 0
+  const ftl = calculateFtlMass(ship)
 
-  const streamlining =
-    ship.streamlining !== "none"
-      ? ship.streamlining === "full"
-        ? mass.fullStreamliningFactor * ship.mass
-        : mass.partialStreamliningFactor * ship.mass
-      : 0
+  const streamlining = calculateStreamliningMass(ship)
+  const armor = calculateArmorMass(ship)
 
-  const armor =
-    mass.armor * arraySum(ship.armor) +
-    mass.regenArmor * arraySum(ship.regenArmor)
-
-  const hangars =
-    mass.hangar * ship.hangars +
-    mass.launchTube * ship.launchTubes +
-    mass.fighterRack * ship.fighterRacks +
-    mass.gunboatRack * ship.gunboatRacks
+  const hangars = calculateHangarMass(ship)
 
   const spaces = ship.cargoSpaces + ship.passengerSpaces + ship.marineSpaces
 

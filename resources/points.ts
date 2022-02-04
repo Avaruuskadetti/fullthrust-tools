@@ -15,6 +15,7 @@ const points = {
   hangar: 18,
   launchTube: 9,
   catapultsPerTube: 1,
+  rack: 6,
   marines: 5,
   dcp: 5,
 }

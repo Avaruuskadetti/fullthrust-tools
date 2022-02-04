@@ -429,7 +429,7 @@ export const weaponBlueprints: weaponBlueprint[] = [
             return 12 * w.count
           case "6":
             return 16 * w.count
-          case "4BS":
+          case "2xBS":
             return 20 * w.count
         }
       }
@@ -444,7 +444,7 @@ export const weaponBlueprints: weaponBlueprint[] = [
             return 3 * w.count
           case "6":
             return 4 * w.count
-          case "4BS":
+          case "2xBS":
             return 5 * w.count
         }
       }

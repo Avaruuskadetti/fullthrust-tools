@@ -86,6 +86,7 @@ const Weapons: FC<WeaponsProps> = ({ ship, setShip }) => {
           key={`${weapon.value}-${weapon.id}`}
           weapon={weapon}
           blueprint={getWeaponBlueprint(weapon.value)}
+          ship={ship}
           setWeapon={editWeapon}
           deleteWeapon={getDeleteWeapon(weapon.id)}
         />

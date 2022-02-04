@@ -11,6 +11,7 @@ import {
   Chips,
   Chip,
   InputWrapper,
+  Badge,
 } from "@mantine/core"
 import shipComponents from "../../resources/shipComponents"
 import { getShipComponent } from "../../logic/helpers"
@@ -155,6 +156,15 @@ const Systems: FC<SystemsProps> = ({ ship, setShip }) => {
                   </InputWrapper>
                 )}
               </div>
+              <Divider my='sm' />
+              <Group mt='sm' spacing='xs'>
+                <Badge variant='outline' color='blue'>
+                  {getShipComponent(s.value).mass(ship)} mass
+                </Badge>
+                <Badge variant='outline' color='green'>
+                  {getShipComponent(s.value).points(ship)} points
+                </Badge>
+              </Group>
             </Paper>
           ))}
       </div>

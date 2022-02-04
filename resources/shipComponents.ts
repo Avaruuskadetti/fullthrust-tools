@@ -115,9 +115,9 @@ const shipComponents = [
         case "standard 2":
           return asPoints(Math.max(0.4 * ship.mass, 30))
         case "advanced 1":
-          return asPoints(0.3 * ship.mass)
+          return asPoints(Math.max(0.3 * ship.mass, 20))
         case "advanced 2":
-          return asPoints(0.6 * ship.mass)
+          return asPoints(Math.max(0.6 * ship.mass, 40))
       }
     },
     points: (ship: any) => {
