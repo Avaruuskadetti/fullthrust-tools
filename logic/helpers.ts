@@ -24,7 +24,7 @@ export const arraySum = (array: number[]) =>
   array.length > 0 ? array.reduce((prev, curr) => prev + curr) : 0
 export const printNumberArray = (array: number[]) =>
   array.map((row, index) => (index < array.length - 1 ? row + "," : row))
-export const countDCP = (hull: number) => Math.ceil(hull / 20)
+export const countDCP = (mass: number) => Math.ceil(mass / 20)
 
 /* Ship component related functions */
 export const getShipComponent = (value: string) => {

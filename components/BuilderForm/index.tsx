@@ -44,6 +44,7 @@ import {
   calculateFtlMass,
   calculateStreamliningMass,
 } from "../../logic/massCalculation"
+import CargoBuilder from "./Cargo"
 
 interface BuilderFormProps {
   ship: ship
@@ -339,43 +340,28 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         <Title order={3}>Hangars & Cargo</Title>
         <Hangars ship={ship} setShip={setShip} />
         <Fighters ship={ship} setShip={setShip} />
-        <Text weight={600}>Cargo and passenger space (mass used)</Text>
-        <Group noWrap>
-          <NumberInput
-            min={0}
-            value={ship.cargoSpaces}
-            onChange={(value) => setShip({ ...ship, cargoSpaces: value })}
-            label='Cargo'
-          />
-          <NumberInput
-            min={0}
-            value={ship.passengerSpaces}
-            onChange={(value) => setShip({ ...ship, passengerSpaces: value })}
-            label='Passenger'
-          />
-          <NumberInput
-            min={0}
-            value={ship.marineSpaces}
-            onChange={(value) => setShip({ ...ship, marineSpaces: value })}
-            label='Marine'
-          />
-        </Group>
-        <ValueBadges
-          mass={ship.cargoSpaces + ship.passengerSpaces + ship.marineSpaces}
-        />
+        <CargoBuilder ship={ship} setShip={setShip} />
         <Divider mt={16} mb={8} />
         <Text weight={600}>Additional crew</Text>
         <Group noWrap>
           <NumberInput
             min={0}
-            max={countDCP(ship.hull) - ship.marines + ship.passengerSpaces * 4}
+            max={
+              countDCP(ship.mass) -
+              Math.max(ship.marines - ship.marineSpaces * 3, 0) +
+              ship.passengerSpaces * 4
+            }
             value={ship.extraDCP}
             onChange={(value) => setShip({ ...ship, extraDCP: value })}
             label='Additional DCPs'
           />
           <NumberInput
             min={0}
-            max={countDCP(ship.hull) - ship.extraDCP + ship.marineSpaces * 3}
+            max={
+              countDCP(ship.mass) -
+              Math.max(ship.extraDCP - ship.passengerSpaces * 4, 0) +
+              ship.marineSpaces * 3
+            }
             value={ship.marines}
             onChange={(value) => setShip({ ...ship, marines: value })}
             label='Marines'
