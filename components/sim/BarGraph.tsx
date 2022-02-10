@@ -41,7 +41,6 @@ const customTooltip = (unit: string) => {
         </div>
       )
     }
-
     return null
   }
   return tooltip
@@ -56,7 +55,6 @@ interface props {
   unit: string
 }
 const BarGraph = ({ data, unit }: props) => {
-  console.log("data in graph", data)
   return (
     <Box style={{ width: "100%" }}>
       <ResponsiveContainer width='100%' height='100%'>
@@ -66,6 +64,10 @@ const BarGraph = ({ data, unit }: props) => {
             dataKey='name'
             tick={{ fontSize: 8 }}
             interval={data.length > 20 ? 4 : 0}
+          />
+          <Tooltip
+            content={customTooltip(unit)}
+            cursor={{ fill: "rgba(0,0,0,0.5)" }}
           />
         </BarChart>
       </ResponsiveContainer>
