@@ -26,6 +26,7 @@ import NavItem from "../components/NavItem"
 import SendIcon from "../assets/SendIcon"
 import SunIcon from "../assets/SunIcon"
 import MoonIcon from "../assets/MoonIcon"
+import BranchIcon from "../assets/BranchIcon"
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -102,6 +103,14 @@ export default function App(props: AppProps) {
                     color='blue'
                   >
                     Ship builder
+                  </NavItem>
+                  <NavItem
+                    close={handleClose}
+                    href='/sim'
+                    icon={<BranchIcon m='3' />}
+                    color='red'
+                  >
+                    Simulators
                   </NavItem>
                   <NavItem
                     href='/feedback'

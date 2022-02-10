@@ -1,4 +1,11 @@
-import { turn, order, position, simShip } from "./interfaces"
+import {
+  turn,
+  order,
+  position,
+  simShip,
+  simulationShip,
+  armorRow,
+} from "./interfaces"
 import settings from "./settings"
 
 /* Get position change from move distance and facing. Facing directions are numbered clockwise from top by 60 deg steps */
@@ -56,7 +63,6 @@ const getFacingChange = (facing: number, change: number): number => {
 //////////////
 
 // GET ALL POSSIBLE TURNING COMBINATIONS
-// THIS WORKS NOW!
 export const getPossibleTurns = (maxCourse: number): turn[] => {
   // Possible course change amounts, an array from [0 to maxCourse]
   const possibleCourseChanges = Array.from(Array(maxCourse + 1).keys())
@@ -95,8 +101,11 @@ const getPossibleAccelerations = (thrust: number, velocity: number) => {
   return accels
 }
 
-export const getPossibleOrders = (ship: simShip): order[] => {
-  const maxCourseChange = settings.roundCourseChangeUp
+export const getPossibleOrders = (
+  ship: simShip,
+  roundCourseChangeUp: boolean
+): order[] => {
+  const maxCourseChange = roundCourseChangeUp
     ? Math.ceil(ship.drive / 2)
     : Math.floor(ship.drive / 2)
   const turns = getPossibleTurns(maxCourseChange)
@@ -133,8 +142,11 @@ export const executeOrder = (ship: simShip, order: order) => {
 }
 
 // Returns an array of all possible end positions for a ship during one move
-export const getPossiblePositions = (ship: simShip) => {
-  const possibleOrders = getPossibleOrders(ship)
+export const getPossiblePositions = (
+  ship: simShip,
+  roundCourseChangeUp: boolean
+) => {
+  const possibleOrders = getPossibleOrders(ship, roundCourseChangeUp)
   const positions = possibleOrders.map((order: order) =>
     executeOrder(ship, order)
   )
@@ -196,18 +208,6 @@ const rollD6 = (count: number) => {
     .map((_) => Math.ceil(Math.random() * 6))
 }
 
-// Returns array with original rolls[] at 0, rerolls[] at 1
-// Doesn't work right
-export const rollWithCrits = (count: number): number[][] => {
-  const roll = rollD6(count)
-  console.log(`rolled with ${count} dice:`, roll)
-  const rerollCount = roll.filter((x) => x === 6).length
-  console.log(`rerolling with ${rerollCount} dice.`)
-  const reroll = rerollCount > 0 ? rollWithCrits(rerollCount) : []
-  console.log([roll, reroll.flat()])
-  return [roll, reroll.flat()]
-}
-
 const addDiceMod = (roll: number, mod: number) => {
   const newRoll = roll + mod
   if (newRoll > 6) {
@@ -219,18 +219,240 @@ const addDiceMod = (roll: number, mod: number) => {
   }
 }
 
-const beamDice = (
-  count: number,
-  modifier?: number,
-  hits: number[] = [4, 5, 6],
-  reroll: boolean
+const countHits = (
+  roll: number[],
+  toHit: number[],
+  doubleSix: boolean
+): number => {
+  const reducer = (acc: number, cur: number) => {
+    if (toHit.includes(cur)) {
+      const newHits = doubleSix && cur === 6 ? 2 : 1
+      return acc + newHits
+    } else {
+      return acc
+    }
+  }
+
+  return roll.reduce(reducer, 0)
+}
+/*
+ * Beam hit roll. Returns number[] with number of hits, starting from outermost layer of armor.
+ */
+export const beamRoll = (count: number, screen?: number) => {
+  let diceLeft = count
+  let rollArray = []
+  while (diceLeft > 0) {
+    rollArray.push(rollD6(diceLeft))
+    diceLeft = rollArray
+      .at(-1)
+      ?.reduce((a, c) => (c === 6 ? a + 1 : a), 0) as number
+  }
+  // first item of array is hits to screens, rest are penetrating layers
+  const toHit = screen ? [5, 6] : [4, 5, 6]
+  const doubleSix = !(screen && screen === 2)
+  const hits = rollArray.map((c: number[], i: number) => {
+    const currentHits =
+      i === 0 ? countHits(c, toHit, doubleSix) : countHits(c, [4, 5, 6], true)
+    return currentHits
+  })
+  return hits
+}
+
+/**
+ * Resolve damage to a row of armor
+ * @param row armor row damaged
+ * @param dmg amount of damage
+ * @returns new armor row with damage applied & overflowing damage
+ */
+const damageToArmorRow = (row: armorRow, dmg: number): [armorRow, number] => {
+  const toRegen = Math.min(row.regenLeft, dmg)
+  const dmgLeftAfterRegen = dmg - toRegen > 0 ? dmg - toRegen : 0
+  const toArm = Math.min(row.armorLeft, dmgLeftAfterRegen)
+  const overflow = dmg - toRegen - toArm < 0 ? 0 : dmg - toRegen - toArm
+  return [
+    {
+      ...row,
+      regenLeft: row.regenLeft - toRegen,
+      armorLeft: row.armorLeft - toArm,
+    },
+    overflow,
+  ]
+}
+const healArmorRow = (row: armorRow) => {
+  const healable = row.regen - row.regenLeft - row.regenLost
+  if (healable > 0) {
+    const roll = rollD6(healable)
+    const lost = roll.reduce((a, c) => (c === 1 ? a + 1 : a), 0)
+    const healed = roll.reduce((a, c) => (c > 4 ? a + 1 : a), 0)
+    return {
+      ...row,
+      regenLeft: row.regenLeft + healed,
+      regenLost: row.regenLost + lost,
+    }
+  }
+  return row
+}
+/**
+ * Resolve damage to ship's armor
+ * @param armor array of armor rows to be damaged
+ * @param dmg array of damage to each row
+ * @returns new armor row array with damage applied & overflowing damage
+ */
+const damageToArmor = (
+  armor: armorRow[],
+  dmg: number[]
+): [armorRow[], number] => {
+  let mutableArmor = armor.map((row) => ({ ...row }))
+  let overflow = 0
+  const dmgToArmor = dmg.slice(0, armor.length)
+  dmgToArmor.forEach((d: number, i: number) => {
+    const [newArmorRow, newOverflow] = damageToArmorRow(
+      mutableArmor[i],
+      d + overflow
+    )
+    mutableArmor[i] = newArmorRow
+    overflow = newOverflow
+  })
+  return [mutableArmor.map((row) => ({ ...row })), overflow]
+}
+/**
+ * Resolve damage to a simulation ship
+ * @param ship ship to be damaged
+ * @param dmg array of damage
+ * @returns copy of the ship with damage applied
+ */
+const damageToShip = (ship: simulationShip, dmg: number[]) => {
+  // deal damage to armor, get new armor and overflow
+  const [newArmor, overflow] = damageToArmor(ship.armor, dmg)
+  // get remaining damage to hull
+  let dmgToHull =
+    dmg.slice(ship.armor.length).reduce((a, c) => a + c, 0) + overflow
+  // assign copy of hull to mutable variable
+  let newHull = [...ship.hull]
+  // loop over hull layers dealing damage to them
+  for (let i = 0; i < newHull.length; i++) {
+    const currentDmg = Math.min(newHull[i], dmgToHull)
+    newHull[i] -= currentDmg
+    dmgToHull = dmgToHull - currentDmg > 0 ? dmgToHull - currentDmg : 0
+  }
+  // finally return new ship with damaged armor and hull
+  return { ...ship, armor: newArmor, hull: newHull }
+}
+
+const resolveEndPhaseForShip = (ship: simulationShip): simulationShip => {
+  const newArmor = ship.armor.map((row) => healArmorRow(row))
+  // damage control phase, lost modules, reactor explosions etc. missing
+  return { ...ship, armor: newArmor }
+}
+
+interface datapoint {
+  name: string
+  value: number
+}
+const categoriseData = (data: number[], averageTotal?: number) => {
+  let categoryData: datapoint[] = []
+  data.forEach((d, i) => {
+    const exists =
+      categoryData.filter((dp) => dp.name === d.toString()).length > 0
+    if (exists) {
+      categoryData = categoryData.map((dp) =>
+        dp.name === d.toString() ? { name: dp.name, value: dp.value + 1 } : dp
+      )
+    } else {
+      categoryData.push({ name: d.toString(), value: d })
+    }
+  })
+  const finalData = [...categoryData]
+    .sort((a, b) => parseInt(a.name) - parseInt(b.name))
+    .map((dp) => ({
+      ...dp,
+      value: dp.value / (averageTotal ? averageTotal : 1),
+    }))
+  return finalData
+}
+
+const getMedian = (data: number[]) => {
+  const mid = Math.floor(data.length / 2)
+  const sortedData = [...data].sort((a, b) => a - b)
+  const median =
+    data.length % 2 !== 0
+      ? sortedData[mid]
+      : sortedData[mid - 1] + sortedData[mid] / 2
+  return median
+}
+
+const getMode = (data: number[]) => {
+  const categorised = categoriseData(data)
+  const counts = categorised.map((dp) => dp.value)
+  const highestCount = Math.max(...counts)
+  return parseInt(categorised.filter((dp) => dp.value === highestCount)[0].name)
+}
+
+export const simulateAverageDamage = (
+  target: simulationShip,
+  dice: number,
+  iterations: number
 ) => {
-  // TODO STILL
-  if (reroll) {
-    const roll = rollWithCrits(count)
-    const hitCount = roll[0].filter((r) => hits.includes(r))
-    const critCount = 0
-  } else {
-    const roll = rollD6(count)
+  let data = []
+  for (let i = 0; i < iterations; i++) {
+    const roll = beamRoll(dice, target.screen)
+    const dmg = roll.reduce((a, c) => a + c, 0)
+    data.push(dmg)
+  }
+  const description = `Damage ${
+    target.screen > 0 ? `on lvl ${target.screen} screen` : ""
+  } with ${dice} beams over ${iterations} iterations`
+  const mean = data.reduce((a, c) => a + c, 0) / data.length
+  const median = getMedian(data)
+  const mode = getMode(data)
+  const min = Math.min(...data)
+  const max = Math.max(...data)
+  const categoryData = categoriseData(data, iterations)
+
+  return {
+    description: description,
+    mean: mean,
+    median: median,
+    mode: mode,
+    min: min,
+    max: max,
+    data: categoryData,
+  }
+}
+
+export const simulateRoundsToKill = (
+  target: simulationShip,
+  dice: number,
+  iterations: number
+) => {
+  let rounds = []
+  for (let i = 0; i < iterations; i++) {
+    let ship = { ...target }
+    let currentRounds = 0
+    while (ship.hull.reduce((a, c) => a + c, 0) > 0) {
+      const roll = beamRoll(dice, target.screen)
+      ship = damageToShip(ship, roll)
+      ship = resolveEndPhaseForShip(ship)
+      currentRounds += 1
+      //console.log(`iteration ${i}: ship after ${currentRounds} rounds `, ship)
+    }
+    rounds.push(currentRounds)
+  }
+  const description = `Rounds to kill target with ${dice} beams in ${iterations} iterations`
+  const mean = rounds.reduce((a, c) => a + c, 0) / rounds.length
+  const median = getMedian(rounds)
+  const mode = getMode(rounds)
+  const min = Math.min(...rounds)
+  const max = Math.max(...rounds)
+  const categoryData = categoriseData(rounds, iterations)
+  console.log(categoryData)
+  return {
+    description: description,
+    mean: mean,
+    median: median,
+    mode: mode,
+    min: min,
+    max: max,
+    data: categoryData,
   }
 }

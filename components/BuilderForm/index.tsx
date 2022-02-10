@@ -29,6 +29,7 @@ import {
   calculateStreamliningValue,
   countDCP,
 } from "../../logic/helpers"
+import ArmorBuilder from "./Armor"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import Hangars from "./Hangars"
@@ -185,61 +186,18 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
           stepHoldDelay={500}
           stepHoldInterval={100}
         />
-        <InputWrapper label='Armor rows'>
-          <Group noWrap>
-            <Button
-              variant='filled'
-              fullWidth
-              disabled={ship.armor.length > 3}
-              onClick={addArmorRow}
-            >
-              Add row
-            </Button>
-            <Button
-              variant='filled'
-              color='red'
-              fullWidth
-              disabled={ship.armor.length === 0}
-              onClick={removeArmorRow}
-            >
-              Remove row
-            </Button>
-          </Group>
-        </InputWrapper>
-        <SimpleGrid cols={2}>
-          <div>
-            {ship.armor.map((row: number, index: number) => (
-              <NumberInput
-                key={index}
-                label={`Armor row ${index + 1}`}
-                value={row}
-                onChange={(value) => {
-                  const newArmor = ship.armor.map((r: any, i: any) =>
-                    i === index ? value : r
-                  )
-                  setShip({ ...ship, armor: newArmor })
-                }}
-                min={0}
-              />
-            ))}
-          </div>
-          <div>
-            {ship.regenArmor.map((row: number, index: number) => (
-              <NumberInput
-                key={index}
-                label={`Regen. row ${index + 1}`}
-                value={row}
-                onChange={(value) => {
-                  const newRegenArmor = ship.regenArmor.map((r: any, i: any) =>
-                    i === index ? value : r
-                  )
-                  setShip({ ...ship, regenArmor: newRegenArmor })
-                }}
-                min={0}
-              />
-            ))}
-          </div>
-        </SimpleGrid>
+        <ArmorBuilder
+          addArmorRow={addArmorRow}
+          removeArmorRow={removeArmorRow}
+          armor={ship.armor}
+          regenArmor={ship.regenArmor}
+          setArmor={(newArmor: number[]) =>
+            setShip({ ...ship, armor: newArmor })
+          }
+          setRegenArmor={(newRegenArmor: number[]) =>
+            setShip({ ...ship, regenArmor: newRegenArmor })
+          }
+        />
         <InputWrapper label='Stealth hull'>
           <Chips
             mb={8}
