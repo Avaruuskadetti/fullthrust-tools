@@ -18,11 +18,7 @@ import {
 import { Box } from "@mantine/core"
 
 const customTooltip = (unit: string) => {
-  const tooltip = ({
-    active,
-    payload,
-    label,
-  }: TooltipProps<ValueType, NameType>) => {
+  const tooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
         <div
