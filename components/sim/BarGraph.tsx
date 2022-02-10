@@ -18,8 +18,16 @@ import {
 import { Box } from "@mantine/core"
 
 const customTooltip = (unit: string) => {
-  const tooltip = ({ active, payload, label }: any) => {
+  const tooltip = ({
+    active,
+    payload,
+    label,
+  }: TooltipProps<ValueType, NameType>) => {
     if (active && payload && payload.length) {
+      const value =
+        (payload[0].value as number) > 0.0001
+          ? ((payload[0].value as number) * 100).toFixed(2)
+          : ((payload[0].value as number) * 100).toFixed(3)
       return (
         <div
           className='custom-tooltip'
@@ -29,11 +37,7 @@ const customTooltip = (unit: string) => {
             padding: "0 2px",
           }}
         >
-          <p className='label'>{`${
-            (payload[0].value as number) > 0.0001
-              ? ((payload[0].value as number) * 100).toFixed(2)
-              : ((payload[0].value as number) * 100).toFixed(3)
-          }%`}</p>
+          <p className='label'>{`${value && value}%`}</p>
         </div>
       )
     }
