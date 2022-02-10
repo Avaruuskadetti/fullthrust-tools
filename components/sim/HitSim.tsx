@@ -41,7 +41,7 @@ const defaultData: data = {
   mode: 0,
   min: 0,
   max: 0,
-  data: [],
+  data: [{ name: "0", value: 0 }],
 }
 const defaultShip: simulationShip = {
   armor: [],
