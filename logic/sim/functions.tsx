@@ -445,7 +445,6 @@ export const simulateRoundsToKill = (
   const min = Math.min(...rounds)
   const max = Math.max(...rounds)
   const categoryData = categoriseData(rounds, iterations)
-  console.log(categoryData)
   return {
     description: description,
     mean: mean,
