@@ -67,10 +67,6 @@ const BarGraph = ({ data, unit }: props) => {
             tick={{ fontSize: 8 }}
             interval={data.length > 20 ? 4 : 0}
           />
-          <Tooltip
-            content={customTooltip(unit)}
-            cursor={{ fill: "rgba(0,0,0,0.5)" }}
-          />
         </BarChart>
       </ResponsiveContainer>
     </Box>
