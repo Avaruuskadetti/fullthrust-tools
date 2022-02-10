@@ -23,7 +23,7 @@ const customTooltip = (unit: string) => {
     payload,
     label,
   }: TooltipProps<ValueType, NameType>) => {
-    if (active && payload && payload.length) {
+    if (active && payload && payload.length && label) {
       const value =
         (payload[0].value as number) > 0.0001
           ? ((payload[0].value as number) * 100).toFixed(2)
