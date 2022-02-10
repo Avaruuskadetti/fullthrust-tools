@@ -17,6 +17,7 @@ import {
 } from "@mantine/core"
 import { simShip, position } from "../logic/sim/interfaces"
 import HitSim from "../components/sim/HitSim"
+import styles from "./sim.module.css"
 
 const testShip: simShip = {
   position: { x: 0, y: 0, facing: 1 },
@@ -24,11 +25,22 @@ const testShip: simShip = {
   velocity: 4,
 }
 
-const getMapRotation = (facing: number) => ({
-  transform: `rotate(${-(facing - 1) * 60 - 180}deg)`,
-  transformBox: "fill-box",
-  transformOrigin: "center",
-})
+const getMapRotation = (facing: number) => {
+  switch (facing) {
+    case 1:
+      return styles.fore
+    case 2:
+      return styles.foreStarboard
+    case 3:
+      return styles.aftStarboard
+    case 4:
+      return styles.aft
+    case 5:
+      return styles.aftPort
+    case 6:
+      return styles.forePort
+  }
+}
 
 const Sim = () => {
   const [ship, setShip] = useState(testShip)
@@ -107,7 +119,8 @@ const Sim = () => {
                         y={7 + p.y - 0.25}
                         width='0.8'
                         height='0.8'
-                        style={{ ...getMapRotation(p.facing), opacity: 0.3 }}
+                        className={getMapRotation(p.facing)}
+                        style={{ opacity: 0.3 }}
                       />
                     )
                   )}
@@ -117,7 +130,7 @@ const Sim = () => {
                     y={7 + ship.position.y - 0.25}
                     width='0.8'
                     height='0.8'
-                    style={{ ...getMapRotation(ship.position.facing) }}
+                    className={getMapRotation(ship.position.facing)}
                   />
                 </svg>
               </Box>
