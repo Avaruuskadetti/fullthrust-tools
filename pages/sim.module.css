@@ -1,0 +1,27 @@
+.fore,
+.foreStarboard,
+.forePort,
+.aft,
+.aftStarboard,
+.aftPort {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.fore {
+  transform: rotate(-180deg);
+}
+.foreStarboard {
+  transform: rotate(-240deg);
+}
+.aftStarboard {
+  transform: rotate(-300deg);
+}
+.aft {
+  transform: rotate(0);
+}
+.aftPort {
+  transform: rotate(-60deg);
+}
+.forePort {
+  transform: rotate(-120deg);
+}

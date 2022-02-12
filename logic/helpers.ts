@@ -125,7 +125,9 @@ export const calculateArmorValue = (ship: ship) => {
   const armorReducer = (acc: number, curr: number, index: number) =>
     acc + curr * (index + 1) * 2
   const armorValue = ship.armor.reduce(armorReducer, 0)
-  const regenValue = ship.regenArmor.reduce(armorReducer, 0) * 2
+  const regenValue =
+    ship.regenArmor.reduce(armorReducer, 0) +
+    2 * ship.regenArmor.reduce((a, b) => a + b, 0)
   return armorValue + regenValue
 }
 
