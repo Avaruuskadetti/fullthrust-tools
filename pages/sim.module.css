@@ -1,9 +1,9 @@
 .fore,
 .foreStarboard,
-.aftStarboard,
+.forePort,
 .aft,
-.aftPort,
-.aftStarboard {
+.aftStarboard,
+.aftPort {
   transform-box: fill-box;
   transform-origin: center;
 }

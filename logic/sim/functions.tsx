@@ -58,10 +58,6 @@ const getFacingChange = (facing: number, change: number): number => {
   return newFacing
 }
 
-//////////////
-// TAKE TWO //
-//////////////
-
 // GET ALL POSSIBLE TURNING COMBINATIONS
 export const getPossibleTurns = (maxCourse: number): turn[] => {
   // Possible course change amounts, an array from [0 to maxCourse]
@@ -118,6 +114,7 @@ export const getPossibleOrders = (
     )
     return accelerations.map((a) => ({ turn: t, acceleration: a }))
   })
+  console.log(orders)
   return orders
 }
 
@@ -426,6 +423,7 @@ export const simulateRoundsToKill = (
   iterations: number
 ) => {
   let rounds = []
+  //let armorLeft = []
   for (let i = 0; i < iterations; i++) {
     let ship = { ...target }
     let currentRounds = 0
@@ -436,6 +434,7 @@ export const simulateRoundsToKill = (
       currentRounds += 1
       //console.log(`iteration ${i}: ship after ${currentRounds} rounds `, ship)
     }
+    //armorLeft.push(ship.armor.reduce((a, c) => a + c.armorLeft, 0))
     rounds.push(currentRounds)
   }
   const description = `Rounds to kill target with ${dice} beams in ${iterations} iterations`

@@ -119,7 +119,7 @@ const Sim = () => {
                         y={7 + p.y - 0.25}
                         width='0.8'
                         height='0.8'
-                        className={getMapRotation(p.facing)}
+                        className={getMapRotation(p.facing) + ""}
                         style={{ opacity: 0.3 }}
                       />
                     )
