@@ -83,6 +83,10 @@ const Page: NextPage = () => {
           whether they count as spinal weapons and respect their ship mass
           limits.
         </p>
+        <p>
+          Turrets are TBD. They are not the simplest thing to implement, but
+          I&apos;ll get to it.
+        </p>
       </Text>
     </Paper>
   )
