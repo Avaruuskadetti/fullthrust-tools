@@ -21,6 +21,7 @@ import FighterRacks from "./FighterRacks"
 import Systems from "./Systems"
 import Fighters from "./Fighters"
 import WeaponsData from "./Weapons"
+import OrdnanceData from "./Ordnance"
 import SpinalMountsData from "./SpinalMounts"
 import CrewData from "./Crew"
 import ClipboardIcon from "../../assets/ClipboardIcon"
@@ -125,6 +126,7 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
         <CrewData ship={ship} />
         <Systems ship={ship} />
         <WeaponsData ship={ship} />
+        <OrdnanceData ship={ship} />
         <SpinalMountsData ship={ship} />
       </div>
       <Divider my='sm' />
