@@ -10,12 +10,25 @@ const BranchIcon: FC<BranchIconInterface> = ({ m, size }) => (
     style={{
       margin: m + "px",
       width: size ? size + "px" : "auto",
+      height: size ? size + "px" : "auto",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
     }}
   >
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+    <svg
+      aria-hidden='true'
+      role='img'
+      width='16'
+      height='16'
+      style={{
+        display: "inline-block",
+        userSelect: "none",
+        verticalAlign: "text-bottom",
+        overflow: "visible",
+      }}
+      viewBox='0 0 512 512'
+    >
       <circle
         cx='160'
         cy='96'
