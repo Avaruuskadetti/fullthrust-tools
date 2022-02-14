@@ -21,7 +21,11 @@ const OrdnanceData: FC<OrdnanceDataProps> = ({ ship }) => {
         <Text key={o.label}>
           {`${o.count}x ${o.label} ${
             o.magazine ? printMagazine(o.magazine) : ""
-          } ${o.variant ? " (" + o.variant.label.toLowerCase() + ")" : ""}`}
+          } ${
+            o.variant && bp.variants.length > 1
+              ? " (" + o.variant.label.toLowerCase() + ")"
+              : ""
+          }`}
         </Text>
       )
     } else {

@@ -78,8 +78,8 @@ export const ordnanceBlueprints: ordnanceBlueprint[] = [
     value: "salvoRack",
     label: "Salvo Missile Rack",
     variants: [
-      { value: "std", label: "Standard range" },
-      { value: "ext", label: "Extended range" },
+      { value: "std", label: "Standard" },
+      { value: "ext", label: "Extended" },
     ],
     points: (o: ordnance) =>
       o.variant && o.variant.value === "std" ? o.count * 12 : o.count * 15,
@@ -90,10 +90,10 @@ export const ordnanceBlueprints: ordnanceBlueprint[] = [
     value: "heavyMissile",
     label: "Heavy Missile",
     variants: [
-      { value: "std", label: "Standard range" },
-      { value: "ext", label: "Extended range" },
-      { value: "twoStageStd", label: "Two stage standard range" },
-      { value: "twoStageExt", label: "Two stage extended range" },
+      { value: "std", label: "Standard" },
+      { value: "ext", label: "Extended" },
+      { value: "twoStageStd", label: "Two stage standard" },
+      { value: "twoStageExt", label: "Two stage extended" },
     ],
     points: (o: ordnance) => heavyMissileMass(o) * 3,
     mass: (o: ordnance) => heavyMissileMass(o),
@@ -116,7 +116,7 @@ export const ordnanceBlueprints: ordnanceBlueprint[] = [
     value: "minelayer",
     label: "Mine Layer",
     magazine: true,
-    variants: [{ value: "mines", label: "Mines (in total)" }],
+    variants: [{ value: "mines", label: "Mines" }],
     points: (o: ordnance) => 1,
     mass: (o: ordnance) => {
       const magazineMass = o.magazine
@@ -129,7 +129,7 @@ export const ordnanceBlueprints: ordnanceBlueprint[] = [
     value: "boardingTorpedoLauncher",
     label: "Boarding Torpedo Launcher",
     magazine: true,
-    variants: [{ value: "std", label: "Torpedoes (in total)" }],
+    variants: [{ value: "std", label: "Torpedoes" }],
     points: (o: ordnance) => boardingTorpedoMass(o) * 3,
     mass: boardingTorpedoMass,
   },
