@@ -1,0 +1,49 @@
+.shipContainer {
+  position: absolute;
+  border-radius: 100%;
+  padding: 2px;
+}
+.shipContainer:hover {
+  padding: 0;
+  border: 2px solid rgb(31, 166, 211);
+}
+.ship {
+  transform-origin: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.arcs {
+  position: absolute;
+  opacity: 0.2;
+  width: 200px;
+  height: 200px;
+}
+.label {
+  position: absolute;
+  width: 32px;
+  font-size: 6px;
+  text-align: center;
+}
+.active {
+  padding: 0;
+  border: 2px solid rgb(31, 166, 211);
+}
+.f {
+  transform: rotate(0deg);
+}
+.fs {
+  transform: rotate(60deg);
+}
+.as {
+  transform: rotate(120deg);
+}
+.a {
+  transform: rotate(180deg);
+}
+.ap {
+  transform: rotate(240deg);
+}
+.fp {
+  transform: rotate(300deg);
+}

@@ -1,0 +1,7 @@
+.board {
+  position: relative;
+  background-color: black;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
