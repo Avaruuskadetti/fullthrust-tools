@@ -12,7 +12,7 @@ interface props {
  * @param variant: 'S' for short range, 'L' for long range
  * @returns react component pulse torpedo icon
  */
-const EmpProjector: FC<props> = ({ arcs, value }) => {
+const EmpProjectorIcon: FC<props> = ({ arcs, value }) => {
   return (
     <BaseIcon value={value}>
       <Circle fill='white' stroke='transparent' />
@@ -20,4 +20,4 @@ const EmpProjector: FC<props> = ({ arcs, value }) => {
     </BaseIcon>
   )
 }
-export default EmpProjector
+export default EmpProjectorIcon

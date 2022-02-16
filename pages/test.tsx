@@ -7,8 +7,7 @@ import BeamIcon from "../assets/systemIcons/BeamIcon"
 import GraserIcon from "../assets/systemIcons/GraserIcon"
 import NeedleBeamIcon from "../assets/systemIcons/NeedleBeamIcon"
 import PlasmaCannonIcon from "../assets/systemIcons/PlasmaCannonIcon"
-import EmpProjector from "../assets/systemIcons/EMPProjector"
-
+import EmpProjectorIcon from "../assets/systemIcons/EmpProjectorIcon"
 import WithLabel from "../assets/systemIcons/WithLabel"
 import HeavyGraserIcon from "../assets/systemIcons/HeavyGraserIcon"
 import PhaserIcon from "../assets/systemIcons/PhaserIcon"
@@ -19,6 +18,28 @@ import SubmunitionPackIcon from "../assets/systemIcons/SubmunitionPackIcon"
 import KineticGunIcon from "../assets/systemIcons/KineticGunIcon"
 import MultipleKineticPenetratorIcon from "../assets/systemIcons/MultipleKineticPenetratorIcon"
 import FusionArrayIcon from "../assets/systemIcons/FusionArrayIcon"
+import PointDefenseSystemIcon from "../assets/systemIcons/PointDefenseSystemIcon"
+import AreaDefenseSystemIcon from "../assets/systemIcons/AreaDefenseSystemIcon"
+import ScattergunIcon from "../assets/systemIcons/ScatterGunIcon"
+import GrapeshotIcon from "../assets/systemIcons/GrapeshotIcon"
+import FireConIcon from "../assets/systemIcons/FireConIcon"
+import AdvancedFireConIcon from "../assets/systemIcons/AdvancedFireConIcon"
+import ADFCIcon from "../assets/systemIcons/ADFCIcon"
+import AADFCIcon from "../assets/systemIcons/AADFCIcon"
+import ScreenIcon from "../assets/systemIcons/ScreenIcon"
+import StealthFieldIcon from "../assets/systemIcons/StealthFieldIcon"
+import AdvancedScreenIcon from "../assets/systemIcons/AdvancedScreenIcon"
+import AreaScreenIcon from "../assets/systemIcons/AreaScreenIcon"
+import AdvancedAreaScreenIcon from "../assets/systemIcons/AdvancedAreaScreenIcon"
+import HolofieldIcon from "../assets/systemIcons/HolofieldIcon"
+import ECMIcon from "../assets/systemIcons/ECMIcon"
+import AreaECMIcon from "../assets/systemIcons/AreaECMIcon"
+import CloakingDeviceIcon from "../assets/systemIcons/CloakingDeviceIcon"
+import CloakingFieldIcon from "../assets/systemIcons/CloakingFieldIcon"
+import TuffleyCloak from "../assets/systemIcons/TuffleyCloakIcon"
+import TuffleyCloakIcon from "../assets/systemIcons/TuffleyCloakIcon"
+import ReflexFieldIcon from "../assets/systemIcons/ReflexFieldIcon"
+import CoreSystemsIcon from "../assets/systemIcons/CoreSystemsIcon"
 
 const Test = () => (
   <div style={{ marginRight: "1rem" }}>
@@ -67,7 +88,7 @@ const Test = () => (
         <PlasmaCannonIcon value='3' arcs={[6, 1, 2]} />
       </WithLabel>
       <WithLabel label='EMP Projector'>
-        <EmpProjector value='II' arcs={[6, 1, 2]} />
+        <EmpProjectorIcon value='II' arcs={[6, 1, 2]} />
       </WithLabel>
       <WithLabel label='Gravitic Gun'>
         <GraviticGunIcon value='1' arcs={[1, 2, 3, 4, 5, 6]} />
@@ -93,6 +114,69 @@ const Test = () => (
       <WithLabel label='Fusion Array'>
         <FusionArrayIcon arcs={[1]} />
       </WithLabel>
+      <WithLabel label='PDS'>
+        <PointDefenseSystemIcon />
+      </WithLabel>
+      <WithLabel label='ADS'>
+        <AreaDefenseSystemIcon arcs={[1, 2, 3, 4, 5, 6]} />
+      </WithLabel>
+      <WithLabel label='Scattergun'>
+        <ScattergunIcon />
+      </WithLabel>
+      <WithLabel label='Grapeshot'>
+        <GrapeshotIcon />
+      </WithLabel>
+      <WithLabel label='FireCon'>
+        <FireConIcon />
+      </WithLabel>
+      <WithLabel label='Advanced FireCon'>
+        <AdvancedFireConIcon />
+      </WithLabel>
+      <WithLabel label='ADFC'>
+        <ADFCIcon />
+      </WithLabel>
+      <WithLabel label='AADFC'>
+        <AADFCIcon />
+      </WithLabel>
+      <WithLabel label='Screen'>
+        <ScreenIcon />
+      </WithLabel>
+      <WithLabel label='Advanced Screen'>
+        <AdvancedScreenIcon />
+      </WithLabel>
+      <WithLabel label='Stealth Field'>
+        <StealthFieldIcon />
+      </WithLabel>
+      <WithLabel label='Area Screen'>
+        <AreaScreenIcon />
+      </WithLabel>
+      <WithLabel label='Advanced Area Screen'>
+        <AdvancedAreaScreenIcon />
+      </WithLabel>
+      <WithLabel label='Holofield'>
+        <HolofieldIcon />
+      </WithLabel>
+      <WithLabel label='ECM'>
+        <ECMIcon />
+      </WithLabel>
+      <WithLabel label='Area ECM'>
+        <AreaECMIcon />
+      </WithLabel>
+      <WithLabel label='Cloaking Device'>
+        <CloakingDeviceIcon />
+      </WithLabel>
+      <WithLabel label='Cloaking Field'>
+        <CloakingFieldIcon />
+      </WithLabel>
+      <WithLabel label='Tuffley Cloak'>
+        <TuffleyCloakIcon />
+      </WithLabel>
+      <WithLabel label='Reflex Field'>
+        <ReflexFieldIcon />
+      </WithLabel>
+    </div>
+    <div style={{ marginTop: "2rem" }}>
+      <CoreSystemsIcon />
     </div>
   </div>
 )
