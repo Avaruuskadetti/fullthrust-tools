@@ -28,4 +28,4 @@ yarn dev
 
 Your development instance will be up on [http://localhost:3000](http://localhost:3000).
 
-Warning: the code base is largely not refactored or cleaned up yet. This has been
+Warning: the code base is largely not refactored or cleaned up yet. This site originates as a quick and dirty experiment to learn typescript and especially some of the older parts of the code are rather ugly. I will attend to this at some point, but for now, here be dragons.
