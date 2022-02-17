@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Full Thrust Fleet Tools
 
-## Getting Started
+This is a site hosting multitude of useful tools for players of spaceship combat miniature game [Full Thrust](https://en.wikipedia.org/wiki/Full_Thrust). It is currently in early development stages and hosted for now on [fullthrust-tools.vercel.app](https://fullthrust-tools.vercel.app).
 
-First, run the development server:
+## Bug reports and feature requests
+
+Found a bug? Want a feature? Feel free to let me know, I appreciate it! You can leave feedback in the feedback form on the site itself or add an issue to this repository.
+
+## Contributing
+
+Full Thrust Fleet Tools is my personal hobby project with no larger goals or schedule beyond what I fancy to do any given evening. This software is released under MIT license in case someone else wants to develop it further. All rights related to Full Thrust are retained by their copyright holders.
+
+If you want to contribute this project, just fork this repository and create a pull request for your contribution. Short instructions for development are included below.
+
+## Development
+
+This site is written in Typescript with [Next.js](https://nextjs.org) seasoned with [Mantine](https://mantine.dev/) UI library and hosted on [Vercel](https://vercel.com/). It doesn't currently utilise any other backend software or databases, everything is included in the Next.js app. You can run a development version of the site locally with Node following the instructions below.
+
+After cloning the repository install the packages and run the development server:
 
 ```bash
+npm install
 npm run dev
 # or
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Your development instance will be up on [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Warning: the code base is largely not refactored or cleaned up yet. This has been
