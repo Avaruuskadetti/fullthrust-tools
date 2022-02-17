@@ -198,9 +198,9 @@ const calculateSpinalValue = (ship: ship) => {
 export const calculateFtlValue = (ship: ship) => {
   const ftl =
     ship.ftlDrive === "standard"
-      ? points.ftlStdFactor * ship.mass
+      ? points.ftlStdFactor * ship.mass * masses.stdFtlFactor
       : ship.ftlDrive === "advanced"
-      ? points.ftlAdvFactor * ship.mass
+      ? points.ftlAdvFactor * ship.mass * masses.advFtlFactor
       : 0
   return ftl === 0 ? 0 : asPoints(ftl)
 }
@@ -238,7 +238,6 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
 
   /* 2x mass std, 3x mass adv. No asPoints: no need for rounding and 0 points possible */
   const ftl = calculateFtlValue(ship)
-  console.log("Ftl:", ftl)
   /* Drive mass: 0.05 * drive rating * mass, points 2x std, 3x adv  */
   const drive = calculateDriveValue(ship)
   /* Streamlining */
