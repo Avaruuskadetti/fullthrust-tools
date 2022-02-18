@@ -27,6 +27,7 @@ import CrewData from "./Crew"
 import ClipboardIcon from "../../assets/ClipboardIcon"
 import { ship } from "../../resources/ship"
 import CargoData from "./Cargo"
+import { spinalmount } from "../../resources/spinalMounts"
 
 interface ShipDataViewProps {
   ship: ship
@@ -43,15 +44,24 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
     }
   }
 
+  const warnings = {
+    spinal:
+      ship.spinalMounts.reduce(
+        (acc: number, cur: spinalmount) => acc + cur.mass * cur.count,
+        0
+      ) >
+      16 * (Math.floor((ship.mass - 1) / 50) + 1),
+    mass: ship.mass - calculateMass(ship) < 0,
+  }
+  const hasWarnings = () =>
+    Object.keys(warnings).reduce((a, c) => a || warnings[c], false)
+
   return (
     <Paper
       my={16}
       padding={withPaper ? "md" : 0}
       shadow={withPaper ? "sm" : ""}
       withBorder={withPaper ? true : false}
-      style={{
-        outline: ship.mass - calculateMass(ship) < 0 ? "3px solid red" : "",
-      }}
     >
       <Group my='sm'>
         <Badge
@@ -67,6 +77,20 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
           CPV {calculateShipValue(ship, true)}
         </Badge>
       </Group>
+      {hasWarnings() && (
+        <Group my='sm'>
+          {warnings.spinal && (
+            <Badge variant='filled' color='red'>
+              Too many spinals!
+            </Badge>
+          )}
+          {warnings.mass && (
+            <Badge variant='filled' color='red'>
+              Overmass!
+            </Badge>
+          )}
+        </Group>
+      )}
       <Divider my='sm' />
       <div ref={textRef}>
         {withPaper && <Title order={2}>{ship.name}</Title>}

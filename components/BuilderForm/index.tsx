@@ -46,6 +46,7 @@ import {
   calculateStreamliningMass,
 } from "../../logic/massCalculation"
 import CargoBuilder from "./Cargo"
+import CrewBuilder from "./Crew"
 
 interface BuilderFormProps {
   ship: ship
@@ -299,35 +300,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         <Hangars ship={ship} setShip={setShip} />
         <Fighters ship={ship} setShip={setShip} />
         <CargoBuilder ship={ship} setShip={setShip} />
-        <Divider mt={16} mb={8} />
-        <Text weight={600}>Additional crew</Text>
-        <Group noWrap>
-          <NumberInput
-            min={0}
-            max={
-              countDCP(ship.mass) -
-              Math.max(ship.marines - ship.marineSpaces * 3, 0) +
-              ship.passengerSpaces * 4
-            }
-            value={ship.extraDCP}
-            onChange={(value) => setShip({ ...ship, extraDCP: value })}
-            label='Additional DCPs'
-          />
-          <NumberInput
-            min={0}
-            max={
-              countDCP(ship.mass) -
-              Math.max(ship.extraDCP - ship.passengerSpaces * 4, 0) +
-              ship.marineSpaces * 3
-            }
-            value={ship.marines}
-            onChange={(value) => setShip({ ...ship, marines: value })}
-            label='Marines'
-          />
-        </Group>
-        <ValueBadges
-          npv={ship.marines * points.marines + ship.extraDCP * points.dcp}
-        />
+        <CrewBuilder ship={ship} setShip={setShip} />
       </Paper>
       <Systems ship={ship} setShip={setShip} />
       <Weapons ship={ship} setShip={setShip} />

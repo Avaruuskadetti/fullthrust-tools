@@ -6,6 +6,7 @@ import RocketIcon from "../../assets/RocketIcon"
 import { ship } from "../../resources/ship"
 import { calculateMass } from "../../logic/massCalculation"
 import { calculateShipValue } from "../../logic/helpers"
+import { spinalmount } from "../../resources/spinalMounts"
 
 interface ShipDataProps {
   ship: ship
@@ -13,6 +14,19 @@ interface ShipDataProps {
 }
 const ShipData: FC<ShipDataProps> = ({ ship, ships }) => {
   const [open, setOpen] = useState(false)
+
+  const warnings = {
+    spinal:
+      ship.spinalMounts.reduce(
+        (acc: number, cur: spinalmount) => acc + cur.mass * cur.count,
+        0
+      ) >
+      16 * (Math.floor((ship.mass - 1) / 50) + 1),
+    mass: ship.mass - calculateMass(ship) < 0,
+  }
+  const hasWarnings = () =>
+    Object.keys(warnings).reduce((a, c) => a || warnings[c], false)
+
   return (
     <>
       <div className={styles.container}>
@@ -46,6 +60,7 @@ const ShipData: FC<ShipDataProps> = ({ ship, ships }) => {
         <Button
           radius='xl'
           className={styles.button}
+          color={hasWarnings() ? "red" : "blue"}
           onClick={() => setOpen(true)}
         >
           <RocketIcon cssModule={styles.buttonIcon} />

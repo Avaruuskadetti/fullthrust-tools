@@ -236,7 +236,6 @@ export const calculateShipValue = (ship: any, cpv: boolean = false) => {
   const armor = calculateArmorValue(ship)
   const stealthHull = calculateStealthHullValue(ship)
 
-  /* 2x mass std, 3x mass adv. No asPoints: no need for rounding and 0 points possible */
   const ftl = calculateFtlValue(ship)
   /* Drive mass: 0.05 * drive rating * mass, points 2x std, 3x adv  */
   const drive = calculateDriveValue(ship)

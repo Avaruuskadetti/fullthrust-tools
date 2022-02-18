@@ -1,6 +1,6 @@
 import type { NextPage } from "next"
 import Link from "next/link"
-import { Container, Title, Text, Paper } from "@mantine/core"
+import { Container, Title, Text, Paper, Code } from "@mantine/core"
 
 const Page: NextPage = () => {
   return (
@@ -17,8 +17,8 @@ const Page: NextPage = () => {
           Fleet tools is my personal pet project to make FT fleet building just
           a bit easier. This whole thing started as a design exercise to replace
           ship building excels with a web app, but as many good things do, it
-          spiraled a bit out of control as more and more ideas popped up while
-          writing the code.
+          spiraled out of control as more and more ideas popped up while writing
+          the code.
         </p>
         <p>
           Currently the site consists of a fleet building tool based on
@@ -31,12 +31,34 @@ const Page: NextPage = () => {
         </p>
         <p>
           Speaking about technical details, the site is developed on
-          React/NextJS with Typescript and hosted on Vercel. I will probably
+          React/Next.js with Typescript and hosted on Vercel. I will probably
           open the Github repository for access as soon as I&apos;ve had some
           time to clean up and refactor the code - it&apos;s currently a bit
           messy as I have concentrated on developing all the fun features and I
           didn&apos;t plan for half of them beforehand. :)
         </p>
+
+        <Code block>
+          <Title order={3}>Changelog</Title>
+          <p>
+            <div>18 Feb 2022 - v0.1.3</div>
+            <div>- refined ship builder warning system</div>
+            <div>
+              - added a warning when decreasing ship mass breaks mass limit for
+              spinal weapons
+            </div>
+            <div>- added info view for remaining crew space</div>
+            <div>- added this change log to about page</div>
+          </p>
+          <p>
+            <div>17 Feb 2022 - v0.1.2</div>
+            <div>- fixed FTL points calculation</div>
+          </p>
+          <p>
+            <div>16 Feb 2022 - v0.1.1</div>
+            <div>- added missing ordnance to ship data view</div>
+          </p>
+        </Code>
       </Text>
     </Paper>
   )
