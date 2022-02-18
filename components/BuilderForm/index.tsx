@@ -131,6 +131,11 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
           <A href='/ship-builder-rules-interpretations'>read more here</A>.
         </Text>
         <Text my='sm'>
+          Recent changes to the app can be found in{" "}
+          <A href='/about'>changelog</A>. Most recent update was on Feb 18,
+          2022.
+        </Text>
+        <Text my='sm'>
           Build your ship by filling in the forms below. On desktop, you will
           see the resulting ship on the right column. On mobile, preview the
           ship by clicking the rocket icon in the top right corner. Once
