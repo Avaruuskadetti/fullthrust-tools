@@ -44,8 +44,8 @@ const Page: NextPage = () => {
             which cost extra 42 points (as in CPV rules linked above)
           </li>
         </ul>
-        NPV point values are unaltered. For now, gunboats and their racks are
-        priced in CPV with their NPV.
+        NPV point values are unaltered. For now, gunboats and their racks
+        don&apos;t have cost changes in CPV.
       </Text>
       <Title order={3}>Technical compromises</Title>
       <Text my='sm'>
@@ -84,8 +84,8 @@ const Page: NextPage = () => {
           limits.
         </p>
         <p>
-          Turrets are TBD. They are not the simplest thing to implement, but
-          I&apos;ll get to it.
+          <strong>Turrets</strong> are TBD. They are not the simplest thing to
+          implement, but I&apos;ll get to it.
         </p>
       </Text>
     </Paper>
