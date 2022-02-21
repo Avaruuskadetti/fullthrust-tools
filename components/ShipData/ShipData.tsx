@@ -28,6 +28,7 @@ import ClipboardIcon from "../../assets/ClipboardIcon"
 import { ship } from "../../resources/ship"
 import CargoData from "./Cargo"
 import { spinalmount } from "../../resources/spinalMounts"
+import GunboatData from "./Gunboats"
 
 interface ShipDataViewProps {
   ship: ship
@@ -146,6 +147,7 @@ const ShipDataView: FC<ShipDataViewProps> = ({ ship, withPaper = false }) => {
         <FighterRacks ship={ship} />
         <GunboatRacks ship={ship} />
         <Fighters ship={ship} />
+        <GunboatData gunboats={ship.gunboats} />
         <CargoData ship={ship} />
         <CrewData ship={ship} />
         <Systems ship={ship} />

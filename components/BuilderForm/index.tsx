@@ -47,6 +47,7 @@ import {
 } from "../../logic/massCalculation"
 import CargoBuilder from "./Cargo"
 import CrewBuilder from "./Crew"
+import Gunboats from "./Gunboats"
 
 interface BuilderFormProps {
   ship: ship
@@ -132,7 +133,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         </Text>
         <Text my='sm'>
           Recent changes to the app can be found in{" "}
-          <A href='/about'>changelog</A>. Most recent update was on Feb 18,
+          <A href='/about'>changelog</A>. Most recent update was on Feb 21,
           2022.
         </Text>
         <Text my='sm'>
@@ -304,6 +305,7 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         <Title order={3}>Hangars & Cargo</Title>
         <Hangars ship={ship} setShip={setShip} />
         <Fighters ship={ship} setShip={setShip} />
+        <Gunboats ship={ship} setShip={setShip} />
         <CargoBuilder ship={ship} setShip={setShip} />
         <CrewBuilder ship={ship} setShip={setShip} />
       </Paper>

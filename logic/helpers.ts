@@ -7,6 +7,7 @@ import { ship } from "../resources/ship"
 import { getOrdnanceBlueprint, ordnance } from "../resources/ordnance"
 import { getSpinalBlueprint, spinalmount } from "../resources/spinalMounts"
 import masses from "../resources/masses"
+import { gunboat, gunboats } from "../resources/gunboats"
 
 /* Divides hull boxes to rows, returns an array with number of boxes/row */
 export const calculateHullArray = (hull: number, rows: number) => {
@@ -47,6 +48,16 @@ export const printFighter = (fighter: Fighter) => {
   return `${fighter.groups} ${modLabels.join(", ")} ${
     typeLabel ? typeLabel : ""
   } fighter group${fighter.groups > 1 ? "s" : ""}`
+}
+export const printGunboat = (gunboat: gunboat) => {
+  const modLabels = gunboat.mods.map(
+    (modValue) => gunboats.mods.filter((m) => m.value === modValue)[0].label
+  )
+  const type = gunboats.types.filter((g) => g.value === gunboat.type)[0]
+  const typeLabel = type ? type.label.toLowerCase() : ""
+  return `${gunboat.groups} ${modLabels.join(", ")} ${typeLabel} gunboat group${
+    gunboat.groups > 1 ? "s" : ""
+  }`
 }
 export const getFighterGroupCount = (ship: any): number => {
   return ship.fighters.reduce(

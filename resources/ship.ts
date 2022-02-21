@@ -2,6 +2,7 @@ import { fighter } from "./fighters"
 import { weapon } from "./weapons"
 import { ordnance } from "./ordnance"
 import { spinalmount } from "./spinalMounts"
+import { gunboat } from "./gunboats"
 
 export interface ship {
   id: number
@@ -22,6 +23,7 @@ export interface ship {
   fighterRacks: number
   gunboatRacks: number
   fighters: fighter[]
+  gunboats: gunboat[]
   cargoSpaces: number
   passengerSpaces: number
   marineSpaces: number

@@ -24,6 +24,7 @@ const baseShip: ship = {
   fighterRacks: 0,
   gunboatRacks: 0,
   fighters: [],
+  gunboats: [],
   cargoSpaces: 0,
   passengerSpaces: 0,
   marineSpaces: 0,

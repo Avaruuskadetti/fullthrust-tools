@@ -41,6 +41,10 @@ const Page: NextPage = () => {
         <Code block>
           <Title order={3}>Changelog</Title>
           <p>
+            <div>21 Feb 2022 - v0.1.4</div>
+            <div>- gunboats added to the builder</div>
+          </p>
+          <p>
             <div>18 Feb 2022 - v0.1.3</div>
             <div>- refined ship builder warning system</div>
             <div>
