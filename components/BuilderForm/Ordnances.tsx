@@ -36,7 +36,7 @@ const Ordnances: FC<ordnancesProps> = ({ ship, setShip }) => {
       const initialVariant = !bp.magazine ? bp.variants[0] : undefined
       const initialMagazine = bp.magazine
         ? bp.variants.map((variant: missileVariant): salvo => {
-            return { value: variant.value, label: variant.label, count: 1 }
+            return { value: variant.value, label: variant.label, count: 0 }
           })
         : undefined
       const newOrdnance: ordnance = {
