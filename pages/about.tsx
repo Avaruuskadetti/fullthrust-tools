@@ -41,6 +41,11 @@ const Page: NextPage = () => {
         <Code block>
           <Title order={3}>Changelog</Title>
           <p>
+            <div>5 Apr 2022 - v0.1.6</div>
+            <div>- fix for drive 0 mass value</div>
+            <div>- fix for screen point costs on small ships</div>
+          </p>
+          <p>
             <div>22 Feb 2022 - v0.1.5</div>
             <div>- small qol fixes to fighters and ordnance</div>
           </p>

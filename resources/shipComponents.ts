@@ -93,13 +93,13 @@ const shipComponents = [
     points: (ship: any) => {
       switch (getSystemFromShip(ship, "screen").version) {
         case "standard 1":
-          return asPoints(0.15 * ship.mass)
+          return asPoints(0.05 * ship.mass) * 3
         case "standard 2":
-          return asPoints(0.3 * ship.mass)
+          return asPoints(0.1 * ship.mass) * 3
         case "advanced 1":
-          return asPoints(0.3 * ship.mass)
+          return asPoints(0.075 * ship.mass) * 4
         case "advanced 2":
-          return asPoints(0.6 * ship.mass)
+          return asPoints(0.15 * ship.mass) * 4
       }
     },
   },

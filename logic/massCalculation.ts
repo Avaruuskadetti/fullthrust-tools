@@ -8,10 +8,14 @@ import { arraySum, getShipComponent } from "./helpers"
 const asMass = (value: number) =>
   Math.round(value) > 0 ? Math.round(value) : 1
 
-export const calculateDriveMass = (ship: ship) =>
-  ship.driveType === "standard"
+export const calculateDriveMass = (ship: ship) => {
+  if (ship.drive === 0) {
+    return 0
+  }
+  return ship.driveType === "standard"
     ? asMass(mass.stdDriveFactor * ship.drive * ship.mass)
     : asMass(mass.advDriveFactor * ship.drive * ship.mass)
+}
 
 export const calculateFtlMass = (ship: ship) =>
   ship.ftlDrive !== "none"
