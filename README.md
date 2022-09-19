@@ -29,3 +29,13 @@ yarn dev
 Your development instance will be up on [http://localhost:3000](http://localhost:3000).
 
 Warning: the code base is largely not refactored or cleaned up yet. This site originates as a quick and dirty experiment and especially some of the older parts of the code are rather ugly. I will attend to this at some point, but for now, here be dragons.
+
+### Experimental branches
+
+Some new features are still very much work in progress. They are not yet usable and some are just experiments that probably will never be. These features exist in feature branches.
+
+Current WIP/experimental features:
+
+- SSD generator for creating custom Ship System Displays
+- improved simulation tools (e.g. simulate each weapon)
+- local virtual tabletop for moving models around
