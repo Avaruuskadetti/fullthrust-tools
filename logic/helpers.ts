@@ -216,12 +216,16 @@ export const calculateFtlValue = (ship: ship) => {
   return ftl === 0 ? 0 : asPoints(ftl)
 }
 
-export const calculateDriveValue = (ship: ship) =>
-  asPoints(
+export const calculateDriveValue = (ship: ship) => {
+  const drive =
     ship.driveType === "standard"
       ? points.driveStdFactor * ship.drive * ship.mass
       : points.driveAdvFactor * ship.drive * ship.mass
-  )
+  if (drive === 0) {
+    return 0
+  }
+  return asPoints(drive)
+}
 
 export const calculateStreamliningValue = (ship: ship) =>
   ship.streamlining !== "none"
