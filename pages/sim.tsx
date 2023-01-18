@@ -28,17 +28,29 @@ const testShip: simShip = {
 const getMapRotation = (facing: number) => {
   switch (facing) {
     case 1:
-      return styles.fore
+      return styles.twelve
     case 2:
-      return styles.foreStarboard
+      return styles.one
     case 3:
-      return styles.aftStarboard
+      return styles.two
     case 4:
-      return styles.aft
+      return styles.three
     case 5:
-      return styles.aftPort
+      return styles.four
     case 6:
-      return styles.forePort
+      return styles.five
+    case 7:
+      return styles.six
+    case 8:
+      return styles.seven
+    case 9:
+      return styles.eight
+    case 10:
+      return styles.nine
+    case 11:
+      return styles.ten
+    case 12:
+      return styles.eleven
   }
 }
 

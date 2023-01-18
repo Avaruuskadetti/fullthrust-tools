@@ -8,7 +8,7 @@ import {
 } from "./interfaces"
 import settings from "./settings"
 
-/* Get position change from move distance and facing. Facing directions are numbered clockwise from top by 60 deg steps */
+/* Get position change from move distance and facing. Facing directions are numbered clockwise from top by 30 deg steps */
 const getPositionChange = (
   position: position,
   distance: number,
@@ -20,28 +20,56 @@ const getPositionChange = (
     case 2:
       return {
         ...position,
-        x: position.x + (Math.sqrt(3) / 2) * distance,
-        y: position.y + 0.5 * distance,
+        x: position.x + 0.5 * distance,
+        y: position.y + (Math.sqrt(3) / 2) * distance,
       }
     case 3:
       return {
         ...position,
         x: position.x + (Math.sqrt(3) / 2) * distance,
-        y: position.y - 0.5 * distance,
+        y: position.y + 0.5 * distance,
       }
     case 4:
-      return { ...position, y: position.y - distance }
+      return { ...position, x: position.x + distance }
     case 5:
       return {
         ...position,
-        x: position.x - (Math.sqrt(3) / 2) * distance,
+        x: position.x + (Math.sqrt(3) / 2) * distance,
         y: position.y - 0.5 * distance,
       }
     case 6:
       return {
         ...position,
+        x: position.x + 0.5 * distance,
+        y: position.y - (Math.sqrt(3) / 2) * distance,
+      }
+    case 7:
+      return { ...position, y: position.y - distance }
+    case 8:
+      return {
+        ...position,
+        x: position.x - 0.5 * distance,
+        y: position.y - (Math.sqrt(3) / 2) * distance,
+      }
+    case 9:
+      return {
+        ...position,
+        x: position.x - (Math.sqrt(3) / 2) * distance,
+        y: position.y - 0.5 * distance,
+      }
+    case 10:
+      return { ...position, x: position.x - distance }
+    case 11:
+      return {
+        ...position,
         x: position.x - (Math.sqrt(3) / 2) * distance,
         y: position.y + 0.5 * distance,
+      }
+    case 12:
+      return {
+        ...position,
+        x: position.x - 0.5 * distance,
+        y: position.y + (Math.sqrt(3) / 2) * distance,
       }
     default:
       return position
@@ -51,9 +79,9 @@ const getPositionChange = (
 const getFacingChange = (facing: number, change: number): number => {
   const newFacing = facing + change
   if (newFacing < 1) {
-    return 6 + newFacing
-  } else if (newFacing > 6) {
-    return newFacing - 6
+    return 12 + newFacing
+  } else if (newFacing > 12) {
+    return newFacing - 12
   }
   return newFacing
 }

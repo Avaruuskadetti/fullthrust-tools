@@ -43,6 +43,10 @@ const Page: NextPage = () => {
           <p>
             <div>18 Jan 2023 - v0.1.7</div>
             <div>- fix for 0 sublight drive point cost</div>
+            <div>
+              - fix for future position simulator, past version erroneously
+              doubled single course change step to 60deg
+            </div>
           </p>
           <p>
             <div>5 Apr 2022 - v0.1.6</div>

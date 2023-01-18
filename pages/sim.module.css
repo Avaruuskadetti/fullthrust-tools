@@ -1,27 +1,51 @@
-.fore,
-.foreStarboard,
-.forePort,
-.aft,
-.aftStarboard,
-.aftPort {
+.one,
+.two,
+.three,
+.four,
+.five,
+.six,
+.seven,
+.eight,
+.nine,
+.ten,
+.eleven,
+.twelve {
   transform-box: fill-box;
   transform-origin: center;
 }
-.fore {
+.twelve {
   transform: rotate(-180deg);
 }
-.foreStarboard {
+.one {
+  transform: rotate(-210deg);
+}
+.two {
   transform: rotate(-240deg);
 }
-.aftStarboard {
+.three {
+  transform: rotate(-270deg);
+}
+.four {
   transform: rotate(-300deg);
 }
-.aft {
+.five {
+  transform: rotate(-330deg);
+}
+.six {
   transform: rotate(0);
 }
-.aftPort {
+.seven {
+  transform: rotate(-30deg);
+}
+.eight {
   transform: rotate(-60deg);
 }
-.forePort {
+.nine {
+  transform: rotate(-90deg);
+}
+.ten {
   transform: rotate(-120deg);
+}
+.eleven {
+  transform: rotate(-150deg);
 }
