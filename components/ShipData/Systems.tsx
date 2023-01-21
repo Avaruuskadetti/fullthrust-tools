@@ -5,15 +5,16 @@ interface SystemsProps {
 }
 const Systems: FC<SystemsProps> = ({ ship }) => {
   const mapping = (system: any) => {
+    let systemString: string
     if (system.count) {
-      return (
-        <Text key={system.label}>
-          {system.count} {system.label}
-        </Text>
-      )
+      systemString = `${system.count} ${system.label}`
+    } else if (system.size) {
+      systemString = `${system.label} ${system.size}`
     } else {
-      return <Text key={system.label}>{system.label}</Text>
+      systemString = system.label
     }
+
+    return <Text key={system.label}>{systemString}</Text>
   }
   return ship.systems.length > 0 ? ship.systems.map(mapping) : <></>
 }

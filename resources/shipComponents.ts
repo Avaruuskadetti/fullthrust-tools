@@ -270,5 +270,14 @@ const shipComponents = [
     mass: (ship: ship) => 0.1 * ship.mass,
     points: (ship: ship) => 0.6 * ship.mass,
   },
+  {
+    value: "tugSystem",
+    label: "Tug system",
+    type: "size",
+    mass: (ship: any) =>
+      asPoints(getSystemFromShip(ship, "tugSystem").size * 0.2),
+    points: (ship: any) =>
+      asPoints(getSystemFromShip(ship, "tugSystem").size * 0.2) * 2,
+  },
 ]
 export default shipComponents

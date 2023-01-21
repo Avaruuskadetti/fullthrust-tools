@@ -44,6 +44,12 @@ const Systems: FC<SystemsProps> = ({ ship, setShip }) => {
           label: system.label,
           version: system.options[0],
         }
+      } else if (system.type === "size") {
+        return {
+          value: system.value,
+          label: system.label,
+          size: 1,
+        }
       }
     }
     const newSystems = systemArray.map(mappingFunction)
@@ -153,6 +159,29 @@ const Systems: FC<SystemsProps> = ({ ship, setShip }) => {
                         </Chip>
                       ))}
                     </Chips>
+                  </InputWrapper>
+                )}
+                {s.size && (
+                  <InputWrapper label='Set system size'>
+                    <NumberInput
+                      label='Size'
+                      min={0}
+                      value={s.size}
+                      onChange={(value) => {
+                        if (typeof value === "number") {
+                          setShip({
+                            ...ship,
+                            systems: ship.systems.map((sys: any) =>
+                              sys.value === s.value
+                                ? { ...sys, size: value }
+                                : sys
+                            ),
+                          })
+                        }
+                      }}
+                      stepHoldDelay={500}
+                      stepHoldInterval={100}
+                    />
                   </InputWrapper>
                 )}
               </div>

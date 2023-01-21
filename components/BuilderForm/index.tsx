@@ -133,7 +133,8 @@ const BuilderForm: FC<BuilderFormProps> = ({ ship, setShip }) => {
         </Text>
         <Text my='sm'>
           Recent changes to the app can be found in{" "}
-          <A href='/about'>changelog</A>. Most recent update was on Apr 5, 2022.
+          <A href='/about'>changelog</A>. Most recent update was on Jan 21,
+          2023, adding tug systems to the builder.
         </Text>
         <Text my='sm'>
           Build your ship by filling in the forms below. On desktop, you will

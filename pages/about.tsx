@@ -41,6 +41,10 @@ const Page: NextPage = () => {
         <Code block>
           <Title order={3}>Changelog</Title>
           <p>
+            <div>21 Jan 2023 - v0.1.8</div>
+            <div>- added tug system to ship systems menu</div>
+          </p>
+          <p>
             <div>18 Jan 2023 - v0.1.7</div>
             <div>- fix for 0 sublight drive point cost</div>
             <div>
